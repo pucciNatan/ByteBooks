@@ -3,7 +3,7 @@
     <div class="sessao">
       <div class="titulo">Acabaram de chegar</div>
       <hr>
-      <a href="" class="verMais">Ver todos</a>
+      <a href="" class="verTodos">Ver todos</a>
       <section>
         <CarroselComponent tipo = 'UltimosLancamentosLoja'/>
       </section>
@@ -12,7 +12,7 @@
     <div class="sessao">
       <div class="titulo">Os mais vendidos</div>
       <hr>
-      <a href="" class="verMais">Ver todos</a>
+      <a href="" class="verTodos">Ver todos</a>
       <section>
         <CarroselComponent tipo = 'maisVendidos'/>
       </section>
@@ -21,7 +21,7 @@
     <div class="sessao">
       <div class="titulo">Combos</div>
       <hr>
-      <a href="" class="verMais">Ver todos</a>
+      <a href="" class="verTodos">Ver todos</a>
       <section>
         <CarroselComponent tipo = 'combos'/>
       </section>
@@ -54,12 +54,12 @@ export default {
     margin-top: 50px;
   }
   .titulo{
-    display: inline-block;
+    height: 40px;
     color: white;
     font-family: 'Roboto', sans-serif;
     font-size: 30px;
   }
-  .verMais{
+  .verTodos{
     color: white;
     font-family: 'Roboto', sans-serif;
     margin-top: 10px;

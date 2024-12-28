@@ -1,27 +1,29 @@
 <template>
   <div class="container">
-    <div class="cardLivro">
-      <div @click="abrirDetalhesLivro" class="imgLivro">
-        <img :src="'http://localhost:8000' + livro.img" :alt="'Capa do livro ' + livro.titulo">
-      </div>
-      <div class="infosLivros">
-        <div class="tituloEDesc">
-          <div class="tituloLivro">
-            {{ livro.titulo }}
+    <router-link :to="'/paginaLivro/' + livro.id" class="routerLink">
+      <div class="cardLivro">
+        <div @click="abrirDetalhesLivro" class="imgLivro">
+          <img :src="'http://localhost:8000' + livro.img" :alt="'Capa do livro ' + livro.titulo">
+        </div>
+        <div class="infosLivros">
+          <div class="tituloEDesc">
+            <div class="tituloLivro">
+              {{ livro.titulo }}
+            </div>
+            <div class="autorLivro">
+              {{ livro.autor }}
+            </div>
           </div>
-          <div class="autorLivro">
-            {{ livro.autor }}
+          <div class="precoLivro">
+            R$ {{ livro.preco }}
           </div>
         </div>
-        <div class="precoLivro">
-          R$ {{ livro.preco }}
-        </div>
+        <button class="botaoComprar">
+          <img src="../../imgs/carrinhoDeCompras.png" alt="Carrinho de compras">
+          <span>Comprar</span>
+        </button>
       </div>
-      <button class="botaoComprar">
-        <img src="../../imgs/carrinhoDeCompras.png" alt="Carrinho de compras">
-        <span>Comprar</span>
-      </button>
-    </div>
+    </router-link>
   </div>
 </template>
 
@@ -121,5 +123,8 @@ export default {
   font-size: 18px;
   margin-left: 6px;
   font-weight: normal;
+}
+.routerLink{
+  text-decoration: none;
 }
 </style>

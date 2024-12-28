@@ -1,11 +1,12 @@
 <template>
 <div class="main">
     <p class="pesquisandoPor">Pesquisando por - {{ this.livro }}</p>
-    <div class="livrosEncontrados">
+    <div class="livrosEncontrados" v-if="livros.length > 0">
         <div v-for="item in livros" :key="item.id" class="livroEncontrado">
           <LivroCard :livro="item"/>
         </div>
     </div>
+    <div v-else class="naoHaLivros">Não há livros para essa pesquisa.</div>
 </div>
 </template>
 
@@ -27,6 +28,12 @@ export default{
         return{
             livro: this.$route.params.livro
         }
+    },
+    beforeRouteUpdate(to, from, next) {
+        const novoLivro = to.params.livro;
+        this.livro = novoLivro;
+        this.$store.dispatch('pesquisarPorLivro', novoLivro);
+        next();
     }
 }
 </script>
@@ -52,5 +59,9 @@ export default{
     }
     .livroEncontrado{
         margin-bottom: 25px;
+    }
+    .naoHaLivros{
+        font-size: 16px;
+        color: rgb(255, 255, 255, 0.9);
     }
 </style>

@@ -1,27 +1,29 @@
 <template>
 <div v-if="combo" class="container">
-  <div class="cardCombo">
-    <div @click="a" class="imgCombo" :alt="'Imagem do combo ' + combo.tituloCombo">
-      <img v-for="livro in combo.livros" :key="livro.id" :src="'http://localhost:8000' + livro.img">
-    </div>
-    <div class="infosCombo">
-      <div class="tituloEDesc">
-        <div class="tituloCombo">
-          {{ combo.tituloCombo }}
+  <router-link :to="'/paginaCombo/' + combo.id" class="routerLink">
+    <div class="cardCombo">
+      <div class="imgCombo" :alt="'Imagem do combo ' + combo.tituloCombo">
+        <img v-for="livro in combo.livros" :key="livro.id" :src="'http://localhost:8000' + livro.img">
+      </div>
+      <div class="infosCombo">
+        <div class="tituloEDesc">
+          <div class="tituloCombo">
+            {{ combo.tituloCombo }}
+          </div>
+          <div class="descricaoCombo">
+            {{ combo.chamadaDesc }}
+          </div>
         </div>
-        <div class="descricaoCombo">
-          {{ combo.descricao }}
+        <div class="precoCombo">
+          R$ {{ combo.preco }}
         </div>
       </div>
-      <div class="precoCombo">
-        R$ {{ combo.preco }}
-      </div>
+      <button class="botaoComprar">
+        <img src="../../imgs/carrinhoDeCompras.png" alt="Carrinho de compras">
+        <span>Comprar</span>
+      </button>
     </div>
-    <button class="botaoComprar">
-      <img src="../../imgs/carrinhoDeCompras.png" alt="Carrinho de compras">
-      <span>Comprar</span>
-    </button>
-  </div>
+  </router-link>
 </div>
 </template>
 
@@ -95,8 +97,8 @@ export default {
 }
 .descricaoCombo{
   overflow: hidden;
-  height: 50px;
-  font-size: 12px;
+  height: 40px;
+  font-size: 13px;
   margin-bottom: 6px;
   color: #a0a0a0;
 }
@@ -131,5 +133,8 @@ export default {
   font-size: 18px;
   margin-left: 6px;
   font-weight: normal;
+}
+.routerLink{
+  text-decoration: none;
 }
 </style>

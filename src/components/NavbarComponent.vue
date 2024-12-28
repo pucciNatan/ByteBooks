@@ -5,7 +5,6 @@
                 <img src="../imgs/logoComNome.png" alt="Logo Bytebooks">
             </div>
         </router-link>
-
         <ul class="listaItens">
             <router-link to="/" class="rotasNavbar lancamentos"> 
                 <div class="item">
@@ -38,35 +37,59 @@
         </ul>
 
         <div class="barraPesquisa">
-            <input v-model="pesquisa" type="text">
-            <button @click="pesquisar">
+            <input v-model="pesquisa" type="text" @keyup.enter="pesquisar" placeholder="Buscar livros...">
+            <button @click="pesquisar" @keydown="pesquisar">
                 <img src="../imgs/lupa.png" alt="Lupa">
             </button>
         </div>
-
-        <router-link to="/login" class="cadastroELogin">
-            <div class="botaoEntrar">
-                Entrar
-                <img src="../imgs/userIcon.png" alt="">
-            </div>
-        </router-link>
+        <div v-if="isAuthenticated" class="avatar-wrapper" :style="{backgroundColor: avatarColor}">
+            {{ inicialUsuario }}
+        </div>
+        <div v-else class="entrar">
+            <router-link to="/login" class="cadastroELogin">
+                <div class="botaoEntrar">
+                    Entrar
+                    <img src="../imgs/userIcon.png" alt="">
+                </div>
+            </router-link>
+        </div>
     </div>
 </template>
 
 <script>
 export default ({
-    data(){
-        return{
-            pesquisa: ''
-        }
+    data() {
+      return {
+        pesquisa: ''
+      }
     },
-    methods:{
-        pesquisar(){
-            this.$router.push({ path: `/pesquisa/${this.pesquisa}`});
+    computed: {
+      isAuthenticated() {
+        return this.$store.getters.getToken !== ''
+      },
+      nomeUsuario() {
+        return this.$store.getters.getNomeUsuario || ''
+      },
+      inicialUsuario() {
+        return this.nomeUsuario.charAt(0).toUpperCase()
+      },
+      avatarColor() {
+        const colors = ['blue', 'green', 'red', 'purple', 'orange']
+        const index = this.inicialUsuario.charCodeAt(0) % colors.length
+        return colors[index]
+      }
+    },
+    methods: {
+      pesquisar() {
+        if (this.pesquisa == ''){
+            return
         }
+        this.$router.push({ path: `/pesquisa/${this.pesquisa}` });
+        this.pesquisa = ''
+      }
     }
-})
-</script>
+  })
+  </script>
 
 <style scoped>
     .logo > img {
@@ -103,7 +126,6 @@ export default ({
         height: 100%;
     }
 
-    /* Barra colorida no hover */
     .rotasNavbar:hover::after {
         content: "";
         position: absolute;
@@ -125,17 +147,16 @@ export default ({
         background-color: #07ff28;
     }
 
-    /* Efeito para trocar as imagens no hover */
     .item .hover {
         display: none;
     }
 
     .rotasNavbar:hover .normal {
-        display: none; /* Esconde a imagem normal no hover */
+        display: none;
     }
 
     .rotasNavbar:hover .hover {
-        display: inline; /* Mostra a imagem "selecionada" no hover */
+        display: inline;
     }
 
     .listaItens {
@@ -190,7 +211,22 @@ export default ({
         text-decoration: none;
     }
 
-    /* Barra roxa no hover do botão "Entrar" */
+    .entrar{
+        height: 100%;
+    }
+
+    .avatar-wrapper {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
     .cadastroELogin:hover::after {
         content: "";
         position: absolute;
@@ -217,4 +253,5 @@ export default ({
     .botaoEntrar > img {
         width: 20px;
     }
+
 </style>

@@ -1,4 +1,6 @@
 from django.contrib import admin
-from .schemas import ClienteModel
+from .models import Cliente
 
-admin.site.register(ClienteModel)
+@admin.register(Cliente)
+class ClienteAdmin(admin.ModelAdmin):
+    exclude = ('dataNascimento',)

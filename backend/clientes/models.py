@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 
 class Cliente(AbstractUser):
     email = models.EmailField(unique=True, max_length=100)
+    dataNascimento = models.DateField(null=True, blank=True)
 
     REQUIRED_FIELDS = ['email', 'first_name', 'last_name',]
 

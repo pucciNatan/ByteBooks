@@ -17,7 +17,7 @@ def retornaTodosLivros(request):
     else:
         return JsonResponse({'msg':'Livros não encontrados.'},status = 404)
 
-@livros_router.get('livroPorPesquisa/{pesquisaTexto}', response=list[LivroSchema])
+@livros_router.get('livroPorPesquisa/{pesquisaTexto}', response=List[LivroSchema])
 def livroPorId(request, pesquisaTexto: str):
     livroEncontrados = Livro.objects.filter(Q(titulo__icontains = pesquisaTexto) | 
                                             Q(descricao__icontains = pesquisaTexto) |
@@ -78,5 +78,10 @@ def retornaMaisVendidos(request):
     if maisVendidos.exists():
         return maisVendidos
     return JsonResponse({'msg': 'Não há livros recentes.'})
+
+@livros_router.get('livroPorId/{id}', response=LivroSchema)
+def retornaLivroPorId(request, id: int):
+    livroEncontrado =  Livro.objects.get(id = id)
+    return livroEncontrado
 
 

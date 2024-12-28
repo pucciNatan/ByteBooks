@@ -16,3 +16,8 @@ def getTodosCombos(request):
         return combos
     else:
         JsonResponse({'msg':'Nenhum combo foi encontrado'})
+
+@combos_router.get('comboPorId/{id}', response=ComboSchema)
+def retornaLivroPorId(request, id: int):
+    comboEncontrado =  Combo.objects.get(id = id)
+    return comboEncontrado
