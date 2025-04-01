@@ -35,13 +35,18 @@
                 </div>
             </router-link>
         </ul>
-
+        
         <div class="barraPesquisa">
             <input v-model="pesquisa" type="text" @keyup.enter="pesquisar" placeholder="Buscar livros...">
             <button @click="pesquisar" @keydown="pesquisar">
                 <img src="../imgs/lupa.png" alt="Lupa">
             </button>
         </div>
+        <router-link to="/carrinho">
+            <div class="carrinho">
+                <CarrinhoIconeComponent />
+            </div>
+        </router-link>
         <div v-if="isAuthenticated" class="avatar-wrapper" :style="{backgroundColor: avatarColor}">
             {{ inicialUsuario }}
         </div>
@@ -57,7 +62,10 @@
 </template>
 
 <script>
+import CarrinhoIconeComponent from './carrinho/CarrinhoIconeComponent.vue'
+
 export default ({
+    components:{ CarrinhoIconeComponent },
     data() {
       return {
         pesquisa: ''

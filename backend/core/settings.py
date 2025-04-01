@@ -7,7 +7,7 @@ SECRET_KEY = 'django-insecure-27gc#f7c!nw^pw=_&0tnv7^=p$&53^u1i#mp7q+i_4cxu92sky
 
 MY_SECRET = 'muito_secreta_mds'
 
-ACCESS_TOKEN_EXPIRE = 20
+ACCESS_TOKEN_EXPIRE = 3
 
 DEBUG = True
 
@@ -22,7 +22,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'livros',
-    'clientes'
+    'clientes',
+    'carrinho'
 ]
 
 MIDDLEWARE = [

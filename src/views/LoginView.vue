@@ -15,4 +15,7 @@
 </script>
 
 <style scoped>
+.container{
+    height: 620px;
+}
 </style>

@@ -26,6 +26,10 @@ const routes = [
     component: () => import('./views/ComboPageView.vue')
   },
   {
+    path: '/carrinho',
+    component: () => import('./views/CarrinhoView.vue')
+  },
+  {
     path: '/:pathMatch(.*)*',
     redirect: '/'
   }

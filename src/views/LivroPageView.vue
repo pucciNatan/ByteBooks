@@ -121,7 +121,6 @@ export default {
 }
 .quadradosInfos{
     display: flex;
-    align-items: center;
     width: 470px;
     justify-content: space-between;
     background-color: rgb(9, 1, 1);
@@ -173,7 +172,7 @@ export default {
 }
 .preco{
     font-size: 34px;
-    color: #4CAF50;
+    color: #dee204;
     margin: 5px 0 15px;
     height: 60px;
     display: flex;
@@ -200,16 +199,22 @@ export default {
     
 }
 .carrinho{
-    background-color: rgb(238, 180, 20);
+    background-color: rgb(254, 173, 0);
+    color: white;
+    font-size: 18px;
 }
 .carrinho:hover{
-    background-color: rgb(192, 143, 9);
+    background-color: rgb(203, 139, 0);
+    
 }
 .compra{
-    background-color: rgb(255, 255, 255);
+    background-color: #4CAF50;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
 }
 .compra:hover{
-    background-color: rgb(199, 199, 199);
+    background-color: #3b913e
 }
 .scrollMinimalista::-webkit-scrollbar {
     width: 6px;          

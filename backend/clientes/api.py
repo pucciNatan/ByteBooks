@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from .schemas import ClienteModel, ClienteSchemaRegister, ClienteSchemaLogin
 from django.db.models import Q
 from core.auth import JWTAuth
+from carrinho.models import Carrinho
 import jwt
 
 clientes_router = Router()
@@ -25,7 +26,7 @@ def registraCliente(request, cliente: ClienteSchemaRegister):
         )
         novoCliente.set_password(cliente.password)
         novoCliente.save()
-
+        
         return JsonResponse({'msg': 'Cliente registrado com sucesso!'}, status=201)
 
     except IntegrityError:
@@ -39,21 +40,31 @@ def logarUsuario(request, cliente: ClienteSchemaLogin):
     try:
         clienteEncontrado = ClienteModel.objects.filter(Q(username = cliente.emailUsername) | 
                                                         Q(email = cliente.emailUsername)).first()
+                
         if clienteEncontrado is None:
             return JsonResponse({'msg':'Usuário não encontrado.'}, status = 401)
         
         if clienteEncontrado.check_password(cliente.password):
 
-            tempoExpiracao = datetime.now() + timedelta(seconds=settings.ACCESS_TOKEN_EXPIRE)
+            tempoExpiracao = datetime.now() + timedelta(hours=settings.ACCESS_TOKEN_EXPIRE)
 
             payload = {
-                'user': cliente.emailUsername,
+                'userId': clienteEncontrado.id,
                 'exp': int(tempoExpiracao.timestamp())
             }
 
             token = jwt.encode(payload, settings.MY_SECRET, algorithm="HS256")
+            
+            carrinhoExistente = Carrinho.objects.filter(idUsuario = clienteEncontrado.id).first()
 
-            return JsonResponse({'token':token, 'nomeUsuario': clienteEncontrado.first_name}, status = 200)
+            if carrinhoExistente is None:
+                novoCarrinho = Carrinho(
+                    idUsuario = clienteEncontrado.id,
+                )
+
+                novoCarrinho.save()
+
+            return JsonResponse({'token':token, 'nomeUsuario': clienteEncontrado.first_name, 'username':clienteEncontrado.username,}, status = 200)
         else:
             return JsonResponse({'msg':'Senha ou email incorretos.'}, status = 400)
         

@@ -1,14 +1,11 @@
 <template>
-<div>
-  <NavbarComponent/>
-  <div class="container">
-    <router-view/>
+  <div id="app">
+    <NavbarComponent />
+    <div class="conteudoPrincipal">
+      <router-view />
+    </div>
+    <RodapeComponent />
   </div>
-  <RodapeComponent/>
-
-  <button @click="teste">Acessar rota protegida</button>
-</div>
-
 </template>
 
 <script>
@@ -22,18 +19,21 @@ export default {
     this.$store.dispatch("carregarTokenDoStorage")
     this.$store.dispatch("carregarNomeStorage")
   },
-  methods:{
-    teste(){
-      this.$store.dispatch("visitaRotaProtegida")
-    }
-  }
 }
 
 </script>
 
 <style scoped>
-.container{
-  margin-top: 60px;
-  margin-bottom: 60px;
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
+
+.conteudoPrincipal{
+  flex: 1; 
+  margin-top: 60px;
+  margin-bottom: 100px;
+}
+
 </style>

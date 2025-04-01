@@ -6,6 +6,7 @@
             </div>
             
             <div class="detalhesCombo scrollMinimalista">
+                - Descrição: <br> <br>
                 {{ combo.descricao }}
             </div>
             
@@ -103,7 +104,7 @@ export default {
 }
 .detalhesCombo{
     padding: 10px;
-    color: white;
+    color: rgb(229, 229, 229);
     margin-top: 20px;
     width: 480px;
     background-color: #2C2C2C;
@@ -154,7 +155,7 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    color: white;
+    color: rgb(229, 229, 229);
 }
 .titulo{
     max-height: 100px;
@@ -178,7 +179,8 @@ export default {
 }
 .preco{
     font-size: 34px;
-    color: #4CAF50;
+    color: #dee204;
+    font-weight: 500;
     margin: 5px 0 15px;
     height: 50px;
     display: flex;
@@ -187,6 +189,8 @@ export default {
 }
 .botoes{
     display: flex;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 600;
     align-items: center;
     justify-content: space-between;
 }
@@ -194,7 +198,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: black;
+    color: rgb(255, 255, 255);
     width: 49%;
     height: 60px;
     border: none;
@@ -205,15 +209,15 @@ export default {
     
 }
 .carrinho{
-    background-color: rgb(238, 180, 20);
+    background-color: rgb(254, 173, 0);
 }
 .carrinho:hover{
-    background-color: rgb(192, 143, 9);
+    background-color: rgb(220, 150, 0);
 }
 .compra{
-    background-color: rgb(255, 255, 255);
+    background-color: #4CAF50;
 }
 .compra:hover{
-    background-color: rgb(199, 199, 199);
+    background-color: #348d37;
 }
 </style>
