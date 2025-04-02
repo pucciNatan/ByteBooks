@@ -1,17 +1,38 @@
 from django.conf import settings
-from django.http import JsonResponse
 from ninja.security import HttpBearer
+from django.http import HttpRequest
 import jwt
 
 class JWTAuth(HttpBearer):
-    def authenticate(self, request, token):
+    def authenticate(self, request: HttpRequest, token: str):
         try:
-            decoded = jwt.decode(token, settings.MY_SECRET, algorithms=["HS256"])
-            return decoded
+            data = jwt.decode(token, settings.MY_SECRET, algorithms=["HS256"])
+
+        except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
+            return None
         
-        except jwt.ExpiredSignatureError:
-            return JsonResponse({'msg': 'Token expirado.'}, status=401)
-        except jwt.DecodeError:
-            return JsonResponse({'msg': 'Token inválido.'}, status=401)
-        except Exception as e:
-            return JsonResponse({'msg': f'Erro: {str(e)}'}, status=401)
+        if data:
+            return data
+        
+        return None
+        
+'''from django.conf import settings
+from django.http import HttpRequest
+from ninja.security import HttpBearer
+from django.db.models import Q
+from clientes.models import Cliente
+import jwt
+
+class JWTAuth(HttpBearer):
+    def authenticate(self, request: HttpRequest, token: str):
+        try:
+            data = jwt.decode(token, settings.MY_SECRET, algorithms=["HS256"])
+        except (jwt.ExpiredSignatureError, jwt.InvalidTokenError):
+            return None
+        
+        user = Cliente.objects.filter(Q(username = data.get('user')) | 
+                                      Q(email = data.get('user'))).first()
+        if user:
+            return user
+        
+        return None'''

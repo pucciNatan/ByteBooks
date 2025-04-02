@@ -46,7 +46,7 @@ def logarUsuario(request, cliente: ClienteSchemaLogin):
         
         if clienteEncontrado.check_password(cliente.password):
 
-            tempoExpiracao = datetime.now() + timedelta(hours=settings.ACCESS_TOKEN_EXPIRE)
+            tempoExpiracao = datetime.now() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE)
 
             payload = {
                 'userId': clienteEncontrado.id,
