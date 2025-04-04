@@ -47,8 +47,8 @@
             <div class="preco">R$ {{ livro.preco }}</div>
 
             <div class="botoes">
-                <div class="botao carrinho">Adicionar ao carrinho</div>
-                <div class="botao compra">Comprar</div>
+                <div class="botao carrinho" @click="adicionarLivroCarrinho">Adicionar ao carrinho</div>
+                <div class="botao compra" @click="entrarRotaProtegida">Comprar</div>
             </div>
         </div>
     </div>
@@ -64,14 +64,27 @@ export default {
     created() {
         this.$store.dispatch('carregarDetalhesLivro', this.idLivro)
     },
+    methods: {
+        entrarRotaProtegida(){
+            this.$store.dispatch('visitaRotaProtegida')
+        },
+        adicionarLivroCarrinho(){
+            this.$store.dispatch('adicionarAoCarrinho', this.idLivro).then(() => {
+                this.$store.dispatch('carregarItensCarrinho');
+            })
+            .catch(error => {
+                console.error('Erro ao adicionar livro:', error);
+            });
+        },
+    },
     computed: {
         livro() {
-        return this.$store.getters.getDetalhesLivro
+            return this.$store.getters.getDetalhesLivro
         }
     },
     data() {
         return {
-        idLivro: this.$route.params.idLivro
+            idLivro: this.$route.params.idLivro
         }
     }
 }
@@ -242,6 +255,7 @@ export default {
 .scrollMinimalista::-webkit-scrollbar-button:hover {
     background: #fff;
 }
+
 .avaliacoes {
   display: flex;
   align-items: center;

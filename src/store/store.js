@@ -1,5 +1,7 @@
 import { createStore } from 'vuex'
-import { fetchUltimosLancamentos, fetchMaisVendidos, fetchTodosCombos, fetchPesquisar, fetchRotaProtegida, fetchDetalhesLivro, fetchDetalhesCombo } from '../api/apiService.js'
+import { fetchUltimosLancamentos, fetchMaisVendidos, fetchTodosCombos, fetchPesquisar, fetchRotaProtegida, 
+  fetchDetalhesLivro, fetchDetalhesCombo, fetchCarregarCarrinho, fetchAdicionarLivroAoCarrinho, 
+  fetchRemoverLivroDoCarrinho } from '../api/apiService.js'
 import axios from 'axios'
 
 export default createStore({
@@ -11,7 +13,8 @@ export default createStore({
     detalhesLivro: [],
     detalhesCombo: [],
     token: '',
-    nomeUsuario: ''
+    nomeUsuario: '',
+    itensCarrinho: [],
   },
   getters: {
     getStateUltimosLancamentosLoja(state) {
@@ -37,6 +40,12 @@ export default createStore({
     },
     getDetalhesCombo(state){
       return state.detalhesCombo
+    },
+    getItensCarrinho(state){
+      return state.itensCarrinho
+    },
+    getQtdCarrinho(state){
+      return state.itensCarrinho.length
     }
   },
   mutations: {
@@ -65,7 +74,10 @@ export default createStore({
     },
     setDetalhesCombo(state, detalhes){
       state.detalhesCombo = detalhes
-    }
+    },
+    setItensCarrinho(state, itens){
+      state.itensCarrinho = itens
+    },
   },
   actions: {
     async buscarUltimosLancamentosLoja({ commit }) {
@@ -153,6 +165,34 @@ export default createStore({
       }catch (error){
         console.error('Ocorreu um erro: ' + error)
       }
-    }
+    },
+    async carregarItensCarrinho({ commit }){
+      try{
+        const res = await fetchCarregarCarrinho()
+        commit('setItensCarrinho', res.data.listaLivros)
+      }catch (error){
+        console.error('Ocorreu um erro: ' + error)
+      }
+    },
+    async adicionarAoCarrinho({ commit }, idLivro){
+      try{
+        console.log(commit)
+        const res = await fetchAdicionarLivroAoCarrinho(idLivro)
+        console.log(res.data.msg)
+      }catch (error){
+        console.error('Ocorreu um erro: ' + error)
+        localStorage.setItem('token', '')
+        localStorage.setItem('nomeUsuario', '')
+        window.location.replace('/login')
+    }},
+    async removerLivroDoCarrinho({ commit }, idLivro){
+      try{
+        console.log(commit)
+        const res = await fetchRemoverLivroDoCarrinho(idLivro)
+        console.log(res.data.msg)
+      }catch (error){
+        console.error('Ocorreu um erro: ' + error)
+      }
+    },
   }
 })

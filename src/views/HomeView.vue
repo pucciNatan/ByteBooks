@@ -34,8 +34,10 @@ import CarroselComponent from '../components/Livros/CarroselComponent.vue'
 
 export default {
   components: {CarroselComponent},
+  created(){
+    this.$store.dispatch('carregarItensCarrinho');
+  }
 }
-
 </script>
 
 <style scoped>

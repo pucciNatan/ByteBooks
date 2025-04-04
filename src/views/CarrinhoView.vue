@@ -9,6 +9,9 @@ import CarrinhoComponent from '@/components/carrinho/CarrinhoComponent.vue';
 
 export default ({
     components:{ CarrinhoComponent },
+    created(){
+        this.$store.dispatch('visitaRotaProtegida')
+    },
     data(){
         return{
 

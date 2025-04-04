@@ -34,8 +34,8 @@ export default {
   methods:{
     abrirDetalhesLivro(){
       
-    }
-  }
+    },
+  },
 }
 </script>
 

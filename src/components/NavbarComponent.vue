@@ -47,9 +47,11 @@
                 <CarrinhoIconeComponent />
             </div>
         </router-link>
-        <div v-if="isAuthenticated" class="avatar-wrapper" :style="{backgroundColor: avatarColor}">
+        <div v-if="isAuthenticated" class="avatar-wrapper logadoDeslogado" :style="{backgroundColor: avatarColor}">
             {{ inicialUsuario }}
+            <OpcoesPerfil class="opcoes"/>
         </div>
+        
         <div v-else class="entrar">
             <router-link to="/login" class="cadastroELogin">
                 <div class="botaoEntrar">
@@ -63,9 +65,10 @@
 
 <script>
 import CarrinhoIconeComponent from './carrinho/CarrinhoIconeComponent.vue'
+import OpcoesPerfil from './OpcoesPerfil.vue'
 
 export default ({
-    components:{ CarrinhoIconeComponent },
+    components:{ CarrinhoIconeComponent, OpcoesPerfil},
     data() {
       return {
         pesquisa: ''
@@ -208,6 +211,26 @@ export default ({
 
     button > img {
         width: 20px;
+    }
+
+    .logadoDeslogado {
+        position: relative;
+    }
+
+    .opcoes {
+        position: absolute;
+        right: 0px;
+        top: 50px;
+        font-weight: normal;
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0.1s, opacity 0.1s ease;
+    }
+
+    /* Quando o mouse estiver sobre o container pai */
+    .logadoDeslogado:hover .opcoes {
+        visibility: visible;
+        opacity: 1;
     }
 
     .cadastroELogin {

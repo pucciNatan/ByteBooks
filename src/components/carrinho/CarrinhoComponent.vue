@@ -8,19 +8,19 @@
                 <div class="listaItensCarrinho" v-if="itensCarrinho.length">
                     <div class="itemCarrinho" v-for="(item, indice) in itensCarrinho" :key="indice" >
                         <div class="informacoesItem">
-                            <img class="imagemItem" :src="item.imagem" alt="Imagem do produto" />
+                            <img class="imagemItem" :src="'http://localhost:8000' + item.img" :alt="'Capa do livro ' + item.titulo" />
                             <div class="detalhesItem">
-                                <div class="nomeItem">{{ item.nome }}</div>
-                                <p class="precoItem">R$ {{ formatarPreco(item.preco) }}</p>
+                                <div class="nomeItem">{{ item.titulo }}</div>
+                                <p class="precoItem">R$ {{ item.preco }}</p>
                             </div>
                         </div>
                         <div class="acoesItem">
                             <div class="quantidadeControle">
-                                <button class="botaoDiminuir" @click="diminuirQuantidade(indice)">−</button>
-                                <input class="quantidadeItem" type="text" :value="item.quantidade" @change="atualizarQuantidade(indice, $event.target.value)" />
-                                <button class="botaoAumentar" @click="aumentarQuantidade(indice)">+</button>
+                                <button class="botaoDiminuir" @click="diminuirQuantidade()">−</button>
+                                <input class="quantidadeItem" type="text" :value="quantidade"/>
+                                <button class="botaoAumentar" @click="aumentarQuantidade()">+</button>
                             </div>
-                            <button class="botaoRemover" @click="removerItem(indice)">Remover</button>
+                            <button class="botaoRemover" @click="removerItem(indice, item.id)">Remover</button>
                         </div>
                     </div>
                 </div>
@@ -29,7 +29,7 @@
 
             <div class="ladoDireito" v-if="itensCarrinho.length" >
                 <div class="resumoCarrinho">
-                    <p class="textoResumo">Total: <strong>R$ {{ formatarPreco(totalCarrinho) }}</strong></p>
+                    <p class="textoResumo">Total: <strong>R$ {{ totalCarrinho }}</strong></p>
                     <div class="cupomDesconto">
                         <input class="campoCupom" type="text" placeholder="Insira seu cupom" v-model="cupomDesconto" />
                         <button class="botaoAplicarCupom" @click="aplicarCupom">Aplicar</button>
@@ -45,39 +45,36 @@
 
 <script>
 export default ({
+    created(){
+        this.$store.dispatch('carregarItensCarrinho');
+    },
     data() {
         return {
-            itensCarrinho: [
-                { nome: 'Livro Vue.js Essencial', preco: 59.9, quantidade: 1, imagem: "img/arquiteturaLimpa.2f952d83.jpg" },
-                { nome: 'Livro JavaScript Moderno', preco: 79.9, quantidade: 2, imagem: "img/arquiteturaLimpa.2f952d83.jpg" },
-                { nome: 'Livro JavaScript Moderno', preco: 79.9, quantidade: 2, imagem: "img/arquiteturaLimpa.2f952d83.jpg" },
-                { nome: 'Livro JavaScript Moderno', preco: 79.9, quantidade: 2, imagem: "img/arquiteturaLimpa.2f952d83.jpg" }
-            ],
             cupomDesconto: ''
         }
     },
     computed: {
         totalCarrinho() {
             return this.itensCarrinho.reduce((acumulador, item) => acumulador + item.preco * item.quantidade, 0)
+        },
+        itensCarrinho(){
+            return this.$store.getters.getItensCarrinho
+        },
+        quantidade(){
+            return 0
         }
     },
     methods: {
-        formatarPreco(valor) {
-            return valor.toFixed(2).replace('.', ',')
+        aumentarQuantidade() {
+            this.quantidade++
         },
-        aumentarQuantidade(indice) {
-            this.itensCarrinho[indice].quantidade++
-        },
-        diminuirQuantidade(indice) {
-            if (this.itensCarrinho[indice].quantidade > 1) {
-                this.itensCarrinho[indice].quantidade--
+        diminuirQuantidade() {
+            if (this.quantidade > 1) {
+                this.quantidade--
             }
         },
-        atualizarQuantidade(indice, valorNovo) {
-            const quantidadeConvertida = parseInt(valorNovo, 10)
-            this.itensCarrinho[indice].quantidade = isNaN(quantidadeConvertida) || quantidadeConvertida < 1 ? 1 : quantidadeConvertida
-        },
-        removerItem(indice) {
+        removerItem(indice, id) {
+            this.$store.dispatch('removerLivroDoCarrinho', id)
             this.itensCarrinho.splice(indice, 1)
         },
         aplicarCupom() {
@@ -141,6 +138,9 @@ export default ({
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    height: 50vh;
+    padding-right: 5px;
+    overflow-y: scroll;
 }
 
 .itemCarrinho {
@@ -162,8 +162,6 @@ export default ({
     width: 70px;
 }
 .imagemItem {
-    width: 80px;
-    height: 80px;
     object-fit: cover;
     border-radius: 4px;
 }
@@ -294,4 +292,28 @@ export default ({
 .botaoFinalizar:hover {
     background-color: #218838;
 }
+
+.listaItensCarrinho::-webkit-scrollbar {
+  width: 6px;               /* Largura da barra */
+}
+
+.listaItensCarrinho::-webkit-scrollbar-track {
+  background: #2f2f2f;      /* Cor do "trilho" */
+}
+
+.listaItensCarrinho::-webkit-scrollbar-thumb {
+  background-color: #444;   /* Cor do "thumb" */
+  border-radius: 4px;       /* Bordas arredondadas */
+}
+
+.listaItensCarrinho::-webkit-scrollbar-thumb:hover {
+  background-color: #555;   /* Ao passar o mouse */
+}
+
+.listaItensCarrinho {
+  scrollbar-width: thin;            /* Deixa mais fino */
+  scroll-margin-right: 10px;
+  scrollbar-color: #444 #2f2f2f;    /* thumb | track */
+}
+
 </style>

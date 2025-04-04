@@ -49,4 +49,16 @@ export function fetchRotaProtegida(){
   return apiClient.get('clientes/protegida/');
 }
 
+export function fetchCarregarCarrinho(){
+  return apiClient.get('carrinho/retornaCarrinho/');
+}
+
+export function fetchAdicionarLivroAoCarrinho(idLivro){
+  return apiClient.post('carrinho/adicionarLivroAoCarrinho/' + idLivro)
+}
+
+export function fetchRemoverLivroDoCarrinho(idLivro){
+  return apiClient.delete('carrinho/removerDoCarrinho/' + idLivro)
+}
+
 

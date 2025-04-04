@@ -1,7 +1,7 @@
 <template>
     <div class="carrinhoDeCompras">
         <div class="notificacoes">
-            {{numItensCarrinho}}
+            {{ qtdCarrinho }}
         </div>
         <img src="../../imgs/carrinho.png" alt="Carrinho de compras">
     </div>
@@ -9,17 +9,11 @@
 
 <script>
 export default ({
-    data(){
-        return{
-            numItensCarrinho:1
+    computed:{
+        qtdCarrinho(){
+            return this.$store.getters.getQtdCarrinho
         }
     },
-    computed:{
-
-    },
-    methods:{
-        
-    }
 })
 </script>
 
