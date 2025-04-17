@@ -32,7 +32,7 @@ export default {
 
 .conteudoPrincipal{
   flex: 1; 
-  margin-top: 60px;
+  margin-top: 100px;
   margin-bottom: 100px;
 }
 

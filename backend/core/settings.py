@@ -1,6 +1,11 @@
 from pathlib import Path
 import os
 
+ABACATEPAY = {
+    "TOKEN": "abc_dev_WP6jdftbtJb4F3gdpPEa3fYy",
+    "BASE_URL": "https://api.abacatepay.com",
+}
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-27gc#f7c!nw^pw=_&0tnv7^=p$&53^u1i#mp7q+i_4cxu92sky'
@@ -23,7 +28,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'livros',
     'clientes',
-    'carrinho'
+    'carrinho',
+    'abacatepay'
 ]
 
 MIDDLEWARE = [

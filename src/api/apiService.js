@@ -25,6 +25,10 @@ export function fetchUltimosLancamentos(){
   return apiClient.get('livros/ultimosLancamentosLoja');
 }
 
+export function fetchLivroPorCategoria(categoria){
+  return apiClient.get('livros/livroPorCategoria/' + categoria)
+}
+
 export function fetchMaisVendidos(){
   return apiClient.get('livros/maisVendidos/');
 }
@@ -54,11 +58,23 @@ export function fetchCarregarCarrinho(){
 }
 
 export function fetchAdicionarLivroAoCarrinho(idLivro){
-  return apiClient.post('carrinho/adicionarLivroAoCarrinho/' + idLivro)
+  return apiClient.post('carrinho/adicionarItemAoCarrinho/' + idLivro)
 }
 
 export function fetchRemoverLivroDoCarrinho(idLivro){
   return apiClient.delete('carrinho/removerDoCarrinho/' + idLivro)
+}
+
+export function fetchAtualizarQuantidade(idLivro, adicionar) {
+  return apiClient.patch('carrinho/atualizarQuantidade/' + idLivro, { adicionar });
+}
+
+export function fetchComprarLivro(idLivro) {
+  return apiClient.post('livros/comprarLivro/' + idLivro,);
+}
+
+export function fetchGetCliente() {
+  return apiClient.get('clientes/cliente/');
 }
 
 

@@ -6,21 +6,29 @@
         <div class="ladoDireitoEsquerdo">
             <div class="ladoEsquerdo">
                 <div class="listaItensCarrinho" v-if="itensCarrinho.length">
-                    <div class="itemCarrinho" v-for="(item, indice) in itensCarrinho" :key="indice" >
+                    <div class="itemCarrinho" v-for="(item, indice) in itensCarrinho" :key="indice">
                         <div class="informacoesItem">
-                            <img class="imagemItem" :src="'http://localhost:8000' + item.img" :alt="'Capa do livro ' + item.titulo" />
+                            <img class="imagemItem" :src="'http://localhost:8000' + item.livro.img" :alt="'Capa do livro ' + item.livro.titulo" />
                             <div class="detalhesItem">
-                                <div class="nomeItem">{{ item.titulo }}</div>
-                                <p class="precoItem">R$ {{ item.preco }}</p>
+                            <div class="nomeItem">{{ item.livro.titulo }}</div>
+                            <p class="precoItem">R$ {{ item.livro.preco }}</p>
                             </div>
                         </div>
                         <div class="acoesItem">
                             <div class="quantidadeControle">
-                                <button class="botaoDiminuir" @click="diminuirQuantidade()">−</button>
-                                <input class="quantidadeItem" type="text" :value="quantidade"/>
-                                <button class="botaoAumentar" @click="aumentarQuantidade()">+</button>
+                            <button class="botaoDiminuir" @click="diminuirQuantidade(item)">
+                                <div v-if="item.quantidade > 1">
+                                    -
+                                </div>
+                                <div v-else>
+                                    <img src="../../imgs/lixeira.svg" alt="ícone lixeira" style="width: 20px; margin-top: 4px;">
+                                </div>
+                                
+                            </button>
+                            <input class="quantidadeItem" type="text" :value="item.quantidade" readonly />
+                            <button class="botaoAumentar" @click="aumentarQuantidade(item)">+</button>
                             </div>
-                            <button class="botaoRemover" @click="removerItem(indice, item.id)">Remover</button>
+                            <button class="botaoRemover" @click="removerItem(indice, item.livro.id)">Remover</button>
                         </div>
                     </div>
                 </div>
@@ -38,52 +46,54 @@
                 </div>
             </div>
         </div>
-        
-
     </div>
 </template>
 
 <script>
 export default ({
-    created(){
-        this.$store.dispatch('carregarItensCarrinho');
-    },
-    data() {
-        return {
-            cupomDesconto: ''
-        }
-    },
-    computed: {
-        totalCarrinho() {
-            return this.itensCarrinho.reduce((acumulador, item) => acumulador + item.preco * item.quantidade, 0)
-        },
-        itensCarrinho(){
-            return this.$store.getters.getItensCarrinho
-        },
-        quantidade(){
-            return 0
-        }
-    },
-    methods: {
-        aumentarQuantidade() {
-            this.quantidade++
-        },
-        diminuirQuantidade() {
-            if (this.quantidade > 1) {
-                this.quantidade--
-            }
-        },
-        removerItem(indice, id) {
-            this.$store.dispatch('removerLivroDoCarrinho', id)
-            this.itensCarrinho.splice(indice, 1)
-        },
-        aplicarCupom() {
-            alert(this.cupomDesconto ? `Cupom "${this.cupomDesconto}" aplicado!` : 'Digite um cupom primeiro!')
-        },
-        finalizarCompra() {
-            alert('Compra finalizada! Obrigado por escolher ByteBooks.')
-        }
+  created(){
+    this.$store.dispatch('carregarItensCarrinho');
+  },
+  data() {
+    return {
+      cupomDesconto: ''
     }
+  },
+  computed: {
+    totalCarrinho() {
+      let total = this.itensCarrinho.reduce((acumulador, item) => 
+        acumulador + (parseFloat(item.livro.preco) * item.quantidade), 0
+      );
+      return total.toFixed(2);
+    },
+    itensCarrinho(){
+      return this.$store.getters.getItensCarrinho;
+    }
+  },
+  methods: {
+    aumentarQuantidade(item) {
+      this.$store.dispatch('atualizarQuantidade', { idLivro: item.livro.id, adicionar: true });
+    },
+    diminuirQuantidade(item) {
+      this.$store.dispatch('atualizarQuantidade', { idLivro: item.livro.id, adicionar: false });
+    },
+    removerItem(indice, id) {
+      this.$store.dispatch('removerLivroDoCarrinho', id);
+      // Opcional: remova o item localmente se necessário
+      this.itensCarrinho.splice(indice, 1);
+    },
+    aplicarCupom() {
+      alert(this.cupomDesconto ? `Cupom "${this.cupomDesconto}" aplicado!` : 'Digite um cupom primeiro!');
+    },
+    async finalizarCompra() {
+        await Promise.all(
+            this.itensCarrinho.map(item =>
+            this.$store.dispatch('comprarLivro', item.livro.id)
+            )
+        )
+        this.$store.dispatch('carregarItensCarrinho')
+    }
+  }
 })
 </script>
 
@@ -93,7 +103,7 @@ export default ({
     flex-direction: column;
     align-items: center;
     width: 90%;
-    margin: 0 auto;
+    margin: 40px auto;
     font-family: 'Roboto', sans-serif;
     min-height: calc(100vh - 200px);
     color: #e5e5e5;

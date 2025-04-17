@@ -6,32 +6,32 @@
             </div>
         </router-link>
         <ul class="listaItens">
-            <router-link to="/" class="rotasNavbar lancamentos"> 
+            <router-link to="/categorias/lancamentos" class="rotasNavbar lancamentos"> 
                 <div class="item">
                     <img src="../imgs/lancamentosNormal.png" alt="ícone de um foguete" class="fogueteImg normal">
                     <img src="../imgs/lancamentosSelecionado.png" alt="ícone de foguete azul" class="fogueteImg hover">
                     <li>Lançamentos</li> 
                 </div>
             </router-link>
-            <router-link to="/" class="rotasNavbar ofertas"> 
+            <router-link to="/categorias/dados" class="rotasNavbar ofertas"> 
                 <div class="item">
-                    <img src="../imgs/ofertasNormal.png" alt="Ícone de ofertas" class="ofertasImg normal">
-                    <img src="../imgs/ofertasSelecionado.png" alt="Ícone de ofertas amarelo" class="ofertasImg hover">
-                    <li>Promoções</li> 
+                    <img src="../imgs/dadosNormal.png" alt="Ícone de dados" class="dadosImg normal">
+                    <img src="../imgs/dadosSelecionado.png" alt="Ícone de dados amarelo" class="dadosImg hover">
+                    <li>Dados</li> 
                 </div>
             </router-link>
-            <router-link to="/" class="rotasNavbar backend"> 
+            <router-link to="/categorias/backend" class="rotasNavbar backend"> 
                 <div class="item">
                     <img src="../imgs/backendNormal.png" alt="ícone de código" class="backendImg normal">
                     <img src="../imgs/backendSelecionado.png" alt="ícone de código vermelho" class="backendImg hover">
                     <li>Backend</li> 
                 </div>
             </router-link>
-            <router-link to="/" class="rotasNavbar frontend"> 
+            <router-link to="/categorias/software" class="rotasNavbar frontend"> 
                 <div class="item">
                     <img src="../imgs/frontendNormal.png" alt="Ícone de um PC" class="frontendImg normal">
                     <img src="../imgs/frontendSelecionado.png" alt="Ícone de PC verde" class="frontendImg hover">
-                    <li>Frontend</li> 
+                    <li>Software</li> 
                 </div>
             </router-link>
         </ul>
@@ -42,15 +42,17 @@
                 <img src="../imgs/lupa.png" alt="Lupa">
             </button>
         </div>
-        <router-link to="/carrinho">
+        <router-link to="/carrinho" v-if="isAuthenticated">
             <div class="carrinho">
                 <CarrinhoIconeComponent />
             </div>
         </router-link>
-        <div v-if="isAuthenticated" class="avatar-wrapper logadoDeslogado" :style="{backgroundColor: avatarColor}">
-            {{ inicialUsuario }}
-            <OpcoesPerfil class="opcoes"/>
-        </div>
+        <router-link to="/meuPerfil" v-if="isAuthenticated" class="rota"> 
+            <div class="avatar-wrapper logadoDeslogado" :style="{backgroundColor: avatarColor}">
+                {{ inicialUsuario }}
+                <OpcoesPerfil class="opcoes"/>
+            </div>
+        </router-link>
         
         <div v-else class="entrar">
             <router-link to="/login" class="cadastroELogin">
@@ -103,6 +105,9 @@ export default ({
   </script>
 
 <style scoped>
+    .rota{
+        text-decoration: none;
+    }
     .logo > img {
         width: 130px;
         transition: transform 0.3s ease;
@@ -113,6 +118,7 @@ export default ({
     }
     
     .navbar {
+        position: fixed;
         display: flex;
         align-items: center;
         justify-content: space-around;
@@ -122,6 +128,7 @@ export default ({
         height: 80px;
         color: white;
         font-family: 'Roboto', sans-serif;
+        z-index: 1000;
     }
 
 
@@ -284,5 +291,16 @@ export default ({
     .botaoEntrar > img {
         width: 20px;
     }
+
+    .item > img.dadosImg {
+        width: 24px;
+        height: auto;
+        margin-right: 6px;
+    }    
+    
+    .item > img.backendImg {
+        margin-right: 3px;
+    }
+    
 
 </style>

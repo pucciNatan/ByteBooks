@@ -42,7 +42,7 @@ export default {
 
 <style scoped>
   .main{
-    margin: auto;
+    margin: 30px auto;
     display: flex;
     flex-direction: column;
     justify-content: start;
@@ -53,7 +53,7 @@ export default {
     border-radius: 20px;
   }
   .sessao{
-    margin-top: 50px;
+    margin-top: 20px;
   }
   .titulo{
     height: 40px;

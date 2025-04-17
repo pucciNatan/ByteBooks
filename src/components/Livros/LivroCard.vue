@@ -14,13 +14,20 @@
               {{ livro.autor }}
             </div>
           </div>
-          <div class="precoLivro">
+          <div v-if="!comprado" class="precoLivro">
             R$ {{ livro.preco }}
           </div>
+          <div v-else class="compradoEm">
+            <label>Comprado em</label><br />
+            {{ formatDataCompra(livro.dataCompra) }}
+          </div>
         </div>
-        <button class="botaoComprar">
+        <button v-if="!comprado" class="botaoComprar">
           <img src="../../imgs/carrinhoDeCompras.png" alt="Carrinho de compras">
           <span>Comprar</span>
+        </button>
+        <button v-else class="botaoComprar">
+          <span>Ver produto</span>
         </button>
       </div>
     </router-link>
@@ -30,10 +37,17 @@
 <script>
 
 export default {
-  props: ['livro'],
+  props: ['livro', 'comprado'],
   methods:{
-    abrirDetalhesLivro(){
-      
+    formatDataCompra(dataString) {
+      if (!dataString) return ''
+
+      const data = new Date(dataString)
+      const dia = String(data.getDate()).padStart(2, '0')
+      const mes = String(data.getMonth() + 1).padStart(2, '0')
+      const ano = data.getFullYear()
+
+      return `${dia}/${mes}/${ano}`
     },
   },
 }
@@ -126,5 +140,12 @@ export default {
 }
 .routerLink{
   text-decoration: none;
+}
+
+.compradoEm{
+  font-size: 18px;
+}
+.compradoEm > label{
+  font-size: 12px;
 }
 </style>

@@ -18,6 +18,10 @@ const routes = [
     component: () => import('./views/PesquisaView.vue')
   },
   {
+    path: '/categorias/:categoria',
+    component: () => import('./views/PesquisaView.vue')
+  },
+  {
     path: '/paginaLivro/:idLivro',
     component: () => import('./views/LivroPageView.vue')
   },
@@ -28,6 +32,14 @@ const routes = [
   {
     path: '/carrinho',
     component: () => import('./views/CarrinhoView.vue')
+  },
+  {
+    path: '/meuPerfil',
+    component: () => import('./views/MeuPerfilView.vue')
+  },
+  {
+    path: '/minhasCompras',
+    component: () => import('./views/MinhasComprasView.vue')
   },
   {
     path: '/:pathMatch(.*)*',

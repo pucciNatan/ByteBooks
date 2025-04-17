@@ -1,7 +1,13 @@
 <template>
     <div class="balaoOpcoes">
-        <div class="opcao ponta cima">Meu perfil</div>
-        <div class="opcao">Minhas compras</div>
+        <router-link to="/meuPerfil" class="rotas opcao ponta cima"> 
+            <div>Meu perfil</div>
+        </router-link>
+        
+        <router-link to="/minhasCompras" class="rotas opcao"> 
+            <div>Minhas compras</div>
+        </router-link>
+        
         <div class="opcao ponta baixo" @click="sairDaConta">Sair</div>
     </div>
 </template>
@@ -50,5 +56,9 @@
     }
     .baixo{
         padding-bottom: 6px;
+    }
+    .rotas{
+        text-decoration: none;
+        color: white;
     }
 </style>

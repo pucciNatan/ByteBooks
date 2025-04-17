@@ -2,11 +2,17 @@ from ninja import Router
 from django.http import JsonResponse
 from django.db import IntegrityError
 from django.conf import settings
+from django.shortcuts import get_object_or_404
 from datetime import datetime, timedelta
-from .schemas import ClienteModel, ClienteSchemaRegister, ClienteSchemaLogin
+from typing import List
+from .schemas import ClienteModel, ClienteSchemaRegister, ClienteSchemaLogin, ClienteSchema
 from django.db.models import Q
 from core.auth import JWTAuth
 from carrinho.models import Carrinho
+from livros.schemas import LivroSchema
+from django.db.models import Prefetch
+from .models import Compra 
+
 import jwt
 
 clientes_router = Router()
@@ -70,5 +76,37 @@ def logarUsuario(request, cliente: ClienteSchemaLogin):
         
     except ClienteModel.DoesNotExist:
         return JsonResponse({'msg':'Senha ou email incorretos.'}, status = 401)
+    
+@clientes_router.get("cliente/", response=ClienteSchema, auth=JWTAuth())
+def get_cliente(request):
+    usuario_id = request.auth["userId"]
 
+    # Pré-carrega o cliente com o through model 'compra_set', trazendo os livros relacionados
+    cliente = get_object_or_404(
+        ClienteModel.objects.prefetch_related(
+            Prefetch("compra_set", queryset=Compra.objects.select_related("livro"))
+        ),
+        id=usuario_id
+    )
+    
+    # Cria uma lista de livros enriquecida com o campo dataCompra
+    livros_comprados_com_data = []
+    for compra in cliente.compra_set.all():
+        livro = compra.livro
+        # Converte o objeto livro para dicionário utilizando o schema
+        livro_data = LivroSchema.from_orm(livro).dict()
+        livro_data["dataCompra"] = compra.dataCompra
+        livros_comprados_com_data.append(livro_data)
+    
+    # Monta o dicionário de resposta com os dados do cliente
+    cliente_data = {
+        "username": cliente.username,
+        "first_name": cliente.first_name,
+        "last_name": cliente.last_name,
+        "email": cliente.email,
+        "dataNascimento": cliente.dataNascimento,
+        "livrosComprados": livros_comprados_com_data
+    }
+    
+    return cliente_data
 

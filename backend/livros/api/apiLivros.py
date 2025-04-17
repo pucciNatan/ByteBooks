@@ -2,9 +2,15 @@ from ninja import Router
 from django.http import JsonResponse
 from django.db.models import Q
 from typing import List
+from django.shortcuts import get_object_or_404
 from ..models import Livro
 from datetime import datetime, timedelta
 from ..schemas import LivroSchema
+from django.utils import timezone
+from core.auth import JWTAuth
+from carrinho.models import Carrinho
+from clientes.api import ClienteModel
+from clientes.models import Compra
 
 livros_router = Router()
 
@@ -83,5 +89,33 @@ def retornaMaisVendidos(request):
 def retornaLivroPorId(request, id: int):
     livroEncontrado =  Livro.objects.get(id = id)
     return livroEncontrado
+
+@livros_router.post('comprarLivro/{livro_id}', auth=JWTAuth())
+def comprar_livro(request, livro_id: int):
+    livro   = get_object_or_404(Livro, id=livro_id)
+    usuario = get_object_or_404(ClienteModel, id=request.auth["userId"])
+
+    if Compra.objects.filter(livro=livro, cliente=usuario).exists():
+        return JsonResponse({"msg": "Esse livro já foi comprado"}, status=400)
+
+    carrinho = get_object_or_404(Carrinho, idUsuario=usuario.id)
+    if not carrinho.itens.filter(livro_id=livro_id).exists():
+        Compra.objects.create(cliente=usuario, livro=livro, dataCompra=timezone.now())
+
+        return JsonResponse({"msg": "Compra concluída com sucesso!"}, status=200)
+
+
+    Compra.objects.create(cliente=usuario, livro=livro, dataCompra=timezone.now())
+
+    carrinho.itens.filter(livro_id=livro_id).delete()
+
+    return JsonResponse({"msg": "Compra concluída com sucesso!"}, status=200)
+
+
+
+
+
+    
+    
 
 

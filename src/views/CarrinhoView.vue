@@ -12,11 +12,6 @@ export default ({
     created(){
         this.$store.dispatch('visitaRotaProtegida')
     },
-    data(){
-        return{
-
-        }
-    }
 })
 </script>
 

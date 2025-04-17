@@ -1,7 +1,7 @@
 import { createStore } from 'vuex'
 import { fetchUltimosLancamentos, fetchMaisVendidos, fetchTodosCombos, fetchPesquisar, fetchRotaProtegida, 
   fetchDetalhesLivro, fetchDetalhesCombo, fetchCarregarCarrinho, fetchAdicionarLivroAoCarrinho, 
-  fetchRemoverLivroDoCarrinho } from '../api/apiService.js'
+  fetchRemoverLivroDoCarrinho, fetchAtualizarQuantidade, fetchComprarLivro, fetchGetCliente, fetchLivroPorCategoria} from '../api/apiService.js'
 import axios from 'axios'
 
 export default createStore({
@@ -15,6 +15,14 @@ export default createStore({
     token: '',
     nomeUsuario: '',
     itensCarrinho: [],
+    infosUsuario: {
+      username: '',
+      first_name: '',
+      last_name: '',
+      email: '',
+      dataNascimento: '',
+      livrosComprados: [],
+    }, 
   },
   getters: {
     getStateUltimosLancamentosLoja(state) {
@@ -46,6 +54,12 @@ export default createStore({
     },
     getQtdCarrinho(state){
       return state.itensCarrinho.length
+    },
+    getInfosUsuario(state){
+      return state.infosUsuario
+    },
+    getLivrosComprados(state){
+      return state.infosUsuario.livrosComprados
     }
   },
   mutations: {
@@ -78,12 +92,23 @@ export default createStore({
     setItensCarrinho(state, itens){
       state.itensCarrinho = itens
     },
+    setInfosUsuario(state, infosUsuario){
+      state.infosUsuario = infosUsuario
+    }
   },
   actions: {
     async buscarUltimosLancamentosLoja({ commit }) {
       try {
         const res = await fetchUltimosLancamentos()
         commit('setLivrosUltimosLancamentosLoja', res.data)
+      }catch (error){
+        console.error('Ocorreu um erro: ' + error)
+      }
+    },
+    async pesquisarLivrosPorCategoria({ commit }, categoria){
+      try{
+        const res = await fetchLivroPorCategoria(categoria)
+        commit('setPesquisarPorLivro', res.data)
       }catch (error){
         console.error('Ocorreu um erro: ' + error)
       }
@@ -169,7 +194,7 @@ export default createStore({
     async carregarItensCarrinho({ commit }){
       try{
         const res = await fetchCarregarCarrinho()
-        commit('setItensCarrinho', res.data.listaLivros)
+        commit('setItensCarrinho', res.data.itens)
       }catch (error){
         console.error('Ocorreu um erro: ' + error)
       }
@@ -194,5 +219,31 @@ export default createStore({
         console.error('Ocorreu um erro: ' + error)
       }
     },
+    async atualizarQuantidade({ commit, dispatch }, { idLivro, adicionar }) {
+      try {
+        console.log(commit)
+        const res = await fetchAtualizarQuantidade(idLivro, adicionar);
+        await dispatch('carregarItensCarrinho');
+        return res.data;
+      } catch (error) {
+        console.error("Erro ao atualizar quantidade: " + error);
+      }
+    },
+    async comprarLivro({commit}, idLivro){
+      try {
+        await fetchComprarLivro(idLivro)
+        console.log(commit)
+      } catch (error) {
+        console.error("Erro a comprar o livro: " + error)
+      }
+    },
+    async getCliente({commit}){
+      try{
+        const res = await fetchGetCliente()
+        commit('setInfosUsuario', res.data)
+      }catch(erro){
+        console.error("Erro: " + erro)
+      } 
+    }
   }
 })

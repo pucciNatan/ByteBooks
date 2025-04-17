@@ -148,7 +148,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 40px auto;
+    margin: 20px auto;
     width: 350px;
     font-family: 'Montserrat', sans-serif;
     padding: 20px;

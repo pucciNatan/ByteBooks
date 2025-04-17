@@ -37,7 +37,7 @@
             
         </div>
 
-        <div class="conteudoDireita">
+        <div class="conteudoDireita" v-if="!adicionadoAoCarrinho">
             <div class="titulo">{{ livro.titulo }}</div>
 
             <div v-if="livro.qtdVendas > 0" class="avaliacoes"><AvaliacaoEstrelas :rating="livro.avaliacaoGeral" /> ({{ livro.qtdAvaliacoes }})</div>
@@ -47,9 +47,15 @@
             <div class="preco">R$ {{ livro.preco }}</div>
 
             <div class="botoes">
-                <div class="botao carrinho" @click="adicionarLivroCarrinho">Adicionar ao carrinho</div>
-                <div class="botao compra" @click="entrarRotaProtegida">Comprar</div>
+                <div class="botao carrinho" @click="adicionarLivroCarrinho"><b>Adicionar ao carrinho</b></div>
+                <div class="botao compra" @click="comprar"><b>Comprar agora</b></div>
             </div>
+        </div>
+        <div v-else class="adicionadoAoCarrinho">
+            <span>
+                O livro "<strong>{{ livro.titulo }}</strong>" foi adicionado ao seu
+                <router-link to="/carrinho"> carrinho!</router-link>
+            </span>
         </div>
     </div>
 </template>
@@ -63,6 +69,7 @@ export default {
     },
     created() {
         this.$store.dispatch('carregarDetalhesLivro', this.idLivro)
+        this.adicionadoAoCarrinho = false
     },
     methods: {
         entrarRotaProtegida(){
@@ -75,7 +82,14 @@ export default {
             .catch(error => {
                 console.error('Erro ao adicionar livro:', error);
             });
+            this.adicionadoAoCarrinho = true
         },
+        comprar(){
+            this.entrarRotaProtegida()
+            this.$store.dispatch('comprarLivro', this.idLivro);
+            alert(`Livro ${this.livro.titulo} comprado com sucesso!`)
+        }
+
     },
     computed: {
         livro() {
@@ -84,7 +98,8 @@ export default {
     },
     data() {
         return {
-            idLivro: this.$route.params.idLivro
+            idLivro: this.$route.params.idLivro,
+            adicionadoAoCarrinho: false
         }
     }
 }
@@ -206,18 +221,17 @@ export default {
     height: 60px;
     border: none;
     cursor: pointer;
-    transition: background-color 0.3s;
     border-radius: 5px;
     overflow: hidden;
     
 }
 .carrinho{
-    background-color: rgb(254, 173, 0);
+    background-color: rgb(226, 155, 0);
     color: white;
     font-size: 18px;
 }
 .carrinho:hover{
-    background-color: rgb(203, 139, 0);
+    background-color: rgb(190, 130, 0);
     
 }
 .compra{
@@ -263,5 +277,35 @@ export default {
 .numero-avaliacoes {
   margin-left: 8px;
   font-size: 16px;
+}
+.adicionadoAoCarrinho {
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+  gap: 6px;               
+  font-size: 1.2rem;
+  color: #fff;
+  background-color: #2c2c2c;
+  padding: 20px;
+  margin-left: 20px;
+  border-radius: 8px;
+  text-align: center;
+  line-height: 1.5;
+  border: 2px solid #444;
+}
+
+.adicionadoAoCarrinho a {
+  color: #4CAF50;          
+  font-weight: bold;
+  text-decoration: underline;
+  display: inline-block; 
+}
+
+.adicionadoAoCarrinho a:hover {
+    color: #3acb3f;  
+}
+
+router-link{
+    display: flex;
 }
 </style>
