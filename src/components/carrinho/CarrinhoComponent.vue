@@ -42,63 +42,69 @@
                         <input class="campoCupom" type="text" placeholder="Insira seu cupom" v-model="cupomDesconto" />
                         <button class="botaoAplicarCupom" @click="aplicarCupom">Aplicar</button>
                     </div>
-                    <button class="botaoFinalizar" @click="finalizarCompra">Finalizar Compra</button>
+                    <button class="botaoFinalizar" @click="irParaCompra">Finalizar Compra</button>
                 </div>
             </div>
+        </div>
+
+        <div v-if="finalizarCompra" class="finalizarCompra">
+            <TelaPagamento :itens="itensCarrinho" :total="Number(totalCarrinho)" @confirmarCompra="fecharCompra" />
         </div>
     </div>
 </template>
 
 <script>
+import TelaPagamento from '../TelaPagamento.vue';
+
 export default ({
-  created(){
-    this.$store.dispatch('carregarItensCarrinho');
-  },
-  data() {
-    return {
-      cupomDesconto: ''
+    components: {TelaPagamento},
+    created(){
+        this.$store.dispatch('carregarItensCarrinho');
+    },
+    data() {
+        return {
+            cupomDesconto: '',
+            finalizarCompra: false
+        }
+    },
+    computed: {
+        totalCarrinho() {
+        let total = this.itensCarrinho.reduce((acumulador, item) => 
+            acumulador + (parseFloat(item.livro.preco) * item.quantidade), 0
+        );
+        return total.toFixed(2);
+        },
+        itensCarrinho(){
+        return this.$store.getters.getItensCarrinho;
+        }
+    },
+    methods: {
+        aumentarQuantidade(item) {
+        this.$store.dispatch('atualizarQuantidade', { idLivro: item.livro.id, adicionar: true });
+        },
+        diminuirQuantidade(item) {
+        this.$store.dispatch('atualizarQuantidade', { idLivro: item.livro.id, adicionar: false });
+        },
+        removerItem(indice, id) {
+        this.$store.dispatch('removerLivroDoCarrinho', id);
+        this.itensCarrinho.splice(indice, 1);
+        },
+        aplicarCupom() {
+        alert(this.cupomDesconto ? `Cupom "${this.cupomDesconto}" aplicado!` : 'Digite um cupom primeiro!');
+        },
+        irParaCompra() {
+            this.finalizarCompra = true
+        },
+        fecharCompra(){
+            this.finalizarCompra = false
+        }
     }
-  },
-  computed: {
-    totalCarrinho() {
-      let total = this.itensCarrinho.reduce((acumulador, item) => 
-        acumulador + (parseFloat(item.livro.preco) * item.quantidade), 0
-      );
-      return total.toFixed(2);
-    },
-    itensCarrinho(){
-      return this.$store.getters.getItensCarrinho;
-    }
-  },
-  methods: {
-    aumentarQuantidade(item) {
-      this.$store.dispatch('atualizarQuantidade', { idLivro: item.livro.id, adicionar: true });
-    },
-    diminuirQuantidade(item) {
-      this.$store.dispatch('atualizarQuantidade', { idLivro: item.livro.id, adicionar: false });
-    },
-    removerItem(indice, id) {
-      this.$store.dispatch('removerLivroDoCarrinho', id);
-      // Opcional: remova o item localmente se necessário
-      this.itensCarrinho.splice(indice, 1);
-    },
-    aplicarCupom() {
-      alert(this.cupomDesconto ? `Cupom "${this.cupomDesconto}" aplicado!` : 'Digite um cupom primeiro!');
-    },
-    async finalizarCompra() {
-        await Promise.all(
-            this.itensCarrinho.map(item =>
-            this.$store.dispatch('comprarLivro', item.livro.id)
-            )
-        )
-        this.$store.dispatch('carregarItensCarrinho')
-    }
-  }
-})
+    })
 </script>
 
 <style scoped>
 .containerCarrinho {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -324,6 +330,16 @@ export default ({
   scrollbar-width: thin;            /* Deixa mais fino */
   scroll-margin-right: 10px;
   scrollbar-color: #444 #2f2f2f;    /* thumb | track */
+}
+
+.finalizarCompra{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    background-color: rgb(16, 21, 26, 0.9);
 }
 
 </style>

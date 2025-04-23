@@ -29,7 +29,6 @@ INSTALLED_APPS = [
     'livros',
     'clientes',
     'carrinho',
-    'abacatepay'
 ]
 
 MIDDLEWARE = [

@@ -89,6 +89,7 @@ export default ({
       avatarColor() {
         const colors = ['blue', 'green', 'red', 'purple', 'orange']
         const index = this.inicialUsuario.charCodeAt(0) % colors.length
+        this.$store.dispatch("corAvatar" , colors[index]);
         return colors[index]
       }
     },

@@ -1,7 +1,8 @@
 import { createStore } from 'vuex'
 import { fetchUltimosLancamentos, fetchMaisVendidos, fetchTodosCombos, fetchPesquisar, fetchRotaProtegida, 
   fetchDetalhesLivro, fetchDetalhesCombo, fetchCarregarCarrinho, fetchAdicionarLivroAoCarrinho, 
-  fetchRemoverLivroDoCarrinho, fetchAtualizarQuantidade, fetchComprarLivro, fetchGetCliente, fetchLivroPorCategoria} from '../api/apiService.js'
+  fetchRemoverLivroDoCarrinho, fetchAtualizarQuantidade, fetchComprarLivro, fetchGetCliente, 
+  fetchLivroPorCategoria} from '../api/apiService.js'
 import axios from 'axios'
 
 export default createStore({
@@ -23,6 +24,7 @@ export default createStore({
       dataNascimento: '',
       livrosComprados: [],
     }, 
+    corAvatar:''
   },
   getters: {
     getStateUltimosLancamentosLoja(state) {
@@ -60,6 +62,9 @@ export default createStore({
     },
     getLivrosComprados(state){
       return state.infosUsuario.livrosComprados
+    },
+    getCorAvatar(state){
+      return state.corAvatar
     }
   },
   mutations: {
@@ -94,6 +99,9 @@ export default createStore({
     },
     setInfosUsuario(state, infosUsuario){
       state.infosUsuario = infosUsuario
+    },
+    setCorAvatar(state, corAvatar){
+      state.corAvatar = corAvatar
     }
   },
   actions: {
@@ -229,18 +237,28 @@ export default createStore({
         console.error("Erro ao atualizar quantidade: " + error);
       }
     },
-    async comprarLivro({commit}, idLivro){
+    async comprarLivro({ commit }, { idLivro, quantidade }) {
       try {
-        await fetchComprarLivro(idLivro)
+        await fetchComprarLivro(idLivro, quantidade);
         console.log(commit)
       } catch (error) {
-        console.error("Erro a comprar o livro: " + error)
+        console.error("Erro ao comprar o livro: ", error);
+        console.error("status:", error.response?.status);
+        console.error("body  :", error.response?.data);
+        throw error;
       }
     },
     async getCliente({commit}){
       try{
         const res = await fetchGetCliente()
         commit('setInfosUsuario', res.data)
+      }catch(erro){
+        console.error("Erro: " + erro)
+      } 
+    },
+    corAvatar({commit}, corAvatar){
+      try{
+        commit('setCorAvatar', corAvatar)
       }catch(erro){
         console.error("Erro: " + erro)
       } 

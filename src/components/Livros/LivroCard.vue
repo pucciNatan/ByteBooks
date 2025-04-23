@@ -35,22 +35,27 @@
 </template>
 
 <script>
-
 export default {
   props: ['livro', 'comprado'],
-  methods:{
+  methods: {
+    /** Converte "2025-04-23T00:10:03.377Z" → "23/04/2025 00:10:03" */
     formatDataCompra(dataString) {
-      if (!dataString) return ''
+      if (!dataString) return '';
 
-      const data = new Date(dataString)
-      const dia = String(data.getDate()).padStart(2, '0')
-      const mes = String(data.getMonth() + 1).padStart(2, '0')
-      const ano = data.getFullYear()
+      const data = new Date(dataString);
 
-      return `${dia}/${mes}/${ano}`
+      const dia   = String(data.getDate()).padStart(2, '0');
+      const mes   = String(data.getMonth() + 1).padStart(2, '0');
+      const ano   = data.getFullYear();
+
+      const hora  = String(data.getHours()).padStart(2, '0');
+      const min   = String(data.getMinutes()).padStart(2, '0');
+      const seg   = String(data.getSeconds()).padStart(2, '0');
+
+      return `${dia}/${mes}/${ano} ${hora}:${min}:${seg}`;
     },
   },
-}
+};
 </script>
 
 <style scoped>
@@ -143,7 +148,8 @@ export default {
 }
 
 .compradoEm{
-  font-size: 18px;
+  height: 50px;
+  font-size: 17px;
 }
 .compradoEm > label{
   font-size: 12px;

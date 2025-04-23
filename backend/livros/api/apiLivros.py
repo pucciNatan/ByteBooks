@@ -9,6 +9,7 @@ from ..schemas import LivroSchema
 from django.utils import timezone
 from core.auth import JWTAuth
 from carrinho.models import Carrinho
+from clientes.schemas import ComprarLivroIn
 from clientes.api import ClienteModel
 from clientes.models import Compra
 
@@ -91,25 +92,39 @@ def retornaLivroPorId(request, id: int):
     return livroEncontrado
 
 @livros_router.post('comprarLivro/{livro_id}', auth=JWTAuth())
-def comprar_livro(request, livro_id: int):
+def comprar_livro(request, livro_id: int, payload: ComprarLivroIn):
+    qtd      = max(1, payload.quantidade)
     livro   = get_object_or_404(Livro, id=livro_id)
     usuario = get_object_or_404(ClienteModel, id=request.auth["userId"])
+    
+    total_preco = livro.preco * qtd
 
-    if Compra.objects.filter(livro=livro, cliente=usuario).exists():
-        return JsonResponse({"msg": "Esse livro já foi comprado"}, status=400)
+    if usuario.saldo < total_preco:
+        return JsonResponse({"msg": "Saldo insuficiente"}, status=400)
 
+    if livro.estoque < qtd:
+        return JsonResponse({"msg": "Sem estoque para este livro"}, status=400)
+    
+    livro.estoque -= qtd
+    usuario.saldo -= total_preco
+    
     carrinho = get_object_or_404(Carrinho, idUsuario=usuario.id)
     if not carrinho.itens.filter(livro_id=livro_id).exists():
-        Compra.objects.create(cliente=usuario, livro=livro, dataCompra=timezone.now())
+        Compra.objects.create(cliente=usuario, livro=livro, quantidade = qtd, dataCompra=timezone.now())
 
+        usuario.save()
+        livro.save()
         return JsonResponse({"msg": "Compra concluída com sucesso!"}, status=200)
 
 
-    Compra.objects.create(cliente=usuario, livro=livro, dataCompra=timezone.now())
+    Compra.objects.create(cliente=usuario, livro=livro, quantidade = qtd, dataCompra=timezone.now())
 
     carrinho.itens.filter(livro_id=livro_id).delete()
 
+    usuario.save()
+    livro.save()
     return JsonResponse({"msg": "Compra concluída com sucesso!"}, status=200)
+
 
 
 

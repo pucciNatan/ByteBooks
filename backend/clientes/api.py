@@ -12,7 +12,6 @@ from carrinho.models import Carrinho
 from livros.schemas import LivroSchema
 from django.db.models import Prefetch
 from .models import Compra 
-
 import jwt
 
 clientes_router = Router()
@@ -21,25 +20,28 @@ clientes_router = Router()
 def fui(request):
     return JsonResponse({"msg":"Logado com Sucesso!"})
 
-@clientes_router.post('registro/')
-def registraCliente(request, cliente: ClienteSchemaRegister):
+@clientes_router.post("registro/", response={201: dict, 400: dict, 500: dict})
+def registra_cliente(request, cliente: ClienteSchemaRegister):
     try:
-        novoCliente = ClienteModel(
+        data_nasc = datetime.strptime(cliente.dataNascimento, "%d/%m/%Y").date()
+        
+        novo_cliente = ClienteModel(
             username=cliente.username,
             email=cliente.email,
             first_name=cliente.first_name,
             last_name=cliente.last_name,
+            dataNascimento=data_nasc,
         )
-        novoCliente.set_password(cliente.password)
-        novoCliente.save()
-        
-        return JsonResponse({'msg': 'Cliente registrado com sucesso!'}, status=201)
+        novo_cliente.set_password(cliente.password)
+        novo_cliente.save()
+
+        return JsonResponse({"msg": "Cliente registrado com sucesso!"}, status=201)
 
     except IntegrityError:
-        return JsonResponse({'msg': 'Email ou Username já cadastrado.'}, status=400)
+        return JsonResponse({"msg": "Email ou Username já cadastrado."}, status=400)
 
     except Exception as e:
-        return JsonResponse({'msg': f'Erro inesperado: {str(e)}'}, status=500)
+        return JsonResponse({"msg": f"Erro inesperado: {e}"}, status=500)
 
 @clientes_router.post('login/')
 def logarUsuario(request, cliente: ClienteSchemaLogin):
@@ -81,32 +83,59 @@ def logarUsuario(request, cliente: ClienteSchemaLogin):
 def get_cliente(request):
     usuario_id = request.auth["userId"]
 
-    # Pré-carrega o cliente com o through model 'compra_set', trazendo os livros relacionados
+    # Pré‑carrega as compras já com o livro
+    cliente = get_object_or_404(
+        ClienteModel.objects.prefetch_related(
+            Prefetch("compra_set", queryset=Compra.objects.select_related("livro"))
+        ),
+        id=usuario_id,
+    )
+
+    # Lista de livros enriquecida
+    livros_comprados = []
+    for compra in cliente.compra_set.all():
+        livro_data = LivroSchema.from_orm(compra.livro).model_dump()
+        livro_data["dataCompra"] = compra.dataCompra
+        livro_data["quantidade"] = compra.quantidade        # ← campo exigido
+        livros_comprados.append(livro_data)
+
+    # Retorna no formato do schema
+    return {
+        "username": cliente.username,
+        "first_name": cliente.first_name,
+        "last_name": cliente.last_name,
+        "email": cliente.email,
+        "dataNascimento": cliente.dataNascimento,
+        "livrosComprados": livros_comprados,
+    }
+
+@clientes_router.get('saldo/', auth=JWTAuth())
+def getSaldoCliente(request):
+    usuario_id = request.auth["userId"]
+
     cliente = get_object_or_404(
         ClienteModel.objects.prefetch_related(
             Prefetch("compra_set", queryset=Compra.objects.select_related("livro"))
         ),
         id=usuario_id
     )
+
+    return cliente.saldo
+
+@clientes_router.post('saldo/', auth=JWTAuth())
+def postAtualizarSaldo50(request):
+    usuario_id = request.auth["userId"]
+
+    cliente = get_object_or_404(
+        ClienteModel.objects.prefetch_related(
+            Prefetch("compra_set", queryset=Compra.objects.select_related("livro"))
+        ),
+        id=usuario_id
+    )
+
+    cliente.saldo = cliente.saldo + 50
     
-    # Cria uma lista de livros enriquecida com o campo dataCompra
-    livros_comprados_com_data = []
-    for compra in cliente.compra_set.all():
-        livro = compra.livro
-        # Converte o objeto livro para dicionário utilizando o schema
-        livro_data = LivroSchema.from_orm(livro).dict()
-        livro_data["dataCompra"] = compra.dataCompra
-        livros_comprados_com_data.append(livro_data)
-    
-    # Monta o dicionário de resposta com os dados do cliente
-    cliente_data = {
-        "username": cliente.username,
-        "first_name": cliente.first_name,
-        "last_name": cliente.last_name,
-        "email": cliente.email,
-        "dataNascimento": cliente.dataNascimento,
-        "livrosComprados": livros_comprados_com_data
-    }
-    
-    return cliente_data
+    cliente.save()
+    return JsonResponse({'msg':'Saldo atualizado com sucesso!'})
+
 

@@ -4,6 +4,7 @@
         <div class="livrosEncontrados" v-if="livros.length > 0">
             <div v-for="item in livros" :key="item.id" class="livroEncontrado">
               <LivroCard :livro="item" comprado="true"/>
+              <div class="qtdLivrosComprados">{{item.quantidade}}x</div>
             </div>
         </div>
         <div v-else class="naoHaLivros">
@@ -48,10 +49,20 @@ export default{
         grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     }
     .livroEncontrado{
+        position: relative;
         margin-bottom: 25px;
     }
     .naoHaLivros{
         font-size: 20px;
         color: rgba(242, 242, 242, 0.9);
+    }
+    .qtdLivrosComprados{
+        top: -35px;
+        font-size: 20px;
+        color: rgb(236, 236, 236);
+        right: 10px;
+        width: 15%;
+        overflow: hidden;
+        position: absolute;
     }
 </style>

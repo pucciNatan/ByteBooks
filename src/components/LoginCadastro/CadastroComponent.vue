@@ -109,7 +109,7 @@
           username: this.username,
           first_name: this.nome,
           last_name: this.sobrenome,
-          dataNascimento: `${this.anoNascimento}-${this.mesNascimento}-${this.diaNascimento}`,
+          dataNascimento: `${this.diaNascimento}/${this.mesNascimento}/${this.anoNascimento}`,
           email: this.email,
           password: this.senha
         };

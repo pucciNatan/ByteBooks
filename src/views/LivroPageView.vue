@@ -33,8 +33,7 @@
                         <span>{{ livro.dataLancamento }}</span>
                     </div> 
                 </div>
-            </div>
-            
+            </div>            
         </div>
 
         <div class="conteudoDireita" v-if="!adicionadoAoCarrinho">
@@ -46,10 +45,12 @@
 
             <div class="preco">R$ {{ livro.preco }}</div>
 
-            <div class="botoes">
+            <div class="botoes" v-if="livro.estoque > 0">
                 <div class="botao carrinho" @click="adicionarLivroCarrinho"><b>Adicionar ao carrinho</b></div>
-                <div class="botao compra" @click="comprar"><b>Comprar agora</b></div>
+                <div class="botao compra" @click="irParaCompra"><b>Comprar agora</b></div>
             </div>
+            <div v-else class="botao semEstoque">Sem estoque no momento  :(</div>
+
         </div>
         <div v-else class="adicionadoAoCarrinho">
             <span>
@@ -57,15 +58,21 @@
                 <router-link to="/carrinho"> carrinho!</router-link>
             </span>
         </div>
+
+        <div v-if="finalizarCompra" class="finalizarCompra">
+            <TelaPagamento :itens="[{livro}]" :total="livro.preco" @confirmarCompra="fecharCompra" />
+        </div>
     </div>
 </template>
 
 <script>
 import AvaliacaoEstrelas from '../components/AvaliacaoEstrelas.vue'
+import TelaPagamento from '@/components/TelaPagamento.vue'
 
 export default {
     components: {
-        AvaliacaoEstrelas
+        AvaliacaoEstrelas,
+        TelaPagamento
     },
     created() {
         this.$store.dispatch('carregarDetalhesLivro', this.idLivro)
@@ -84,10 +91,11 @@ export default {
             });
             this.adicionadoAoCarrinho = true
         },
-        comprar(){
-            this.entrarRotaProtegida()
-            this.$store.dispatch('comprarLivro', this.idLivro);
-            alert(`Livro ${this.livro.titulo} comprado com sucesso!`)
+        irParaCompra() {
+            this.finalizarCompra = true
+        },
+        fecharCompra(){
+            this.finalizarCompra = false
         }
 
     },
@@ -99,7 +107,8 @@ export default {
     data() {
         return {
             idLivro: this.$route.params.idLivro,
-            adicionadoAoCarrinho: false
+            adicionadoAoCarrinho: false,
+            finalizarCompra: false
         }
     }
 }
@@ -107,6 +116,7 @@ export default {
 
 <style scoped>
 .containerPagProduto {
+    position: relative;
     margin: auto;
     height: 570px;
     width: 940px;
@@ -114,7 +124,6 @@ export default {
     padding: 20px;
     border-radius: 6px;
     display: flex; 
-    overflow: auto;
     white-space: normal;       
     word-wrap: break-word;     
     overflow-wrap: break-word; 
@@ -308,4 +317,24 @@ export default {
 router-link{
     display: flex;
 }
+
+.finalizarCompra{
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    background-color: rgb(16, 21, 26, 0.9);
+}
+
+.semEstoque{
+    color: white;
+    width: 100%;
+    background-color: #444444;
+}
+.semEstoque:hover{
+    cursor: auto;
+}
+
 </style>

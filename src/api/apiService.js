@@ -69,12 +69,25 @@ export function fetchAtualizarQuantidade(idLivro, adicionar) {
   return apiClient.patch('carrinho/atualizarQuantidade/' + idLivro, { adicionar });
 }
 
-export function fetchComprarLivro(idLivro) {
-  return apiClient.post('livros/comprarLivro/' + idLivro,);
+export function fetchComprarLivro(idLivro, quantidade) {
+  const qtd = quantidade || 1;
+
+  return apiClient.post(
+    `/livros/comprarLivro/${idLivro}`,
+    { quantidade: qtd }
+  );
 }
 
 export function fetchGetCliente() {
   return apiClient.get('clientes/cliente/');
+}
+
+export function getSaldoCliente(){
+  return apiClient.get('clientes/saldo/');
+}
+
+export function atualizarSaldoCliente50(){
+  return apiClient.post('clientes/saldo/');
 }
 
 

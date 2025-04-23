@@ -16,7 +16,8 @@ class ClienteSchemaLogin(Schema):
     password: str
 
 class ClienteLivroSchema(LivroSchema):
-    dataCompra: datetime 
+    quantidade: int
+    dataCompra: datetime
 
 class ClienteSchema(ModelSchema):
     livrosComprados: list[ClienteLivroSchema]
@@ -25,3 +26,6 @@ class ClienteSchema(ModelSchema):
         model = ClienteModel
         model_fields = ["username", "first_name", "last_name",
                         "email", "dataNascimento", "livrosComprados"]
+        
+class ComprarLivroIn(Schema):
+    quantidade: int = 1
