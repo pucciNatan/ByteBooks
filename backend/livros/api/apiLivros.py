@@ -107,6 +107,7 @@ def comprar_livro(request, livro_id: int, payload: ComprarLivroIn):
     
     livro.estoque -= qtd
     usuario.saldo -= total_preco
+    livro.qtdVendas += 1
     
     carrinho = get_object_or_404(Carrinho, idUsuario=usuario.id)
     if not carrinho.itens.filter(livro_id=livro_id).exists():
