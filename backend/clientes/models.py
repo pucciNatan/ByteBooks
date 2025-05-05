@@ -15,7 +15,7 @@ class Cliente(AbstractUser):
         through='Compra',
         related_name='compradores'
     )
-    REQUIRED_FIELDS = ['email', 'first_name', 'last_name']
+    REQUIRED_FIELDS = ['email']
 
     def __str__(self):
         return self.email
