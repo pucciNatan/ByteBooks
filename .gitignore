@@ -6,6 +6,9 @@ eval
 # local env files
 .env.local
 .env.*.local
+/backend/venv
+/backend/secret.env
+/backend/db.sqlite3
 
 # Log files
 npm-debug.log*
