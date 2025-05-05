@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import LivroCard from '../components/Livros/LivroCard.vue';
+import LivroCard from './Livros/LivroCard.vue';
 
 export default {
   name: 'SessaoPesquisa',

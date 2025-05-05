@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { getSaldoCliente, atualizarSaldoCliente50 } from "@/api/apiService";
+import { getSaldoCliente, atualizarSaldoCliente50 } from "../api/apiService";
 
 export default {
   name: "TelaPagamento",
