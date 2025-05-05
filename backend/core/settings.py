@@ -16,7 +16,9 @@ ACCESS_TOKEN_EXPIRE = 5
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'bytebooks.onrender.com',
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -106,7 +108,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8080',
+    'https://bytebooks-kappa.vercel.app/'
 ]
 
 CORS_ALLOW_HEADERS = [
