@@ -3,7 +3,7 @@
   <router-link :to="'/paginaCombo/' + combo.id" class="routerLink">
     <div class="cardCombo">
       <div class="imgCombo" :alt="'Imagem do combo ' + combo.tituloCombo">
-        <img v-for="livro in combo.livros" :key="livro.id" :src="'http://localhost:8000' + livro.img">
+        <img v-for="livro in combo.livros" :key="livro.id" :src="'https://bytebooks.onrender.com' + livro.img">
       </div>
       <div class="infosCombo">
         <div class="tituloEDesc">

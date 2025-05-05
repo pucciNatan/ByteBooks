@@ -3,7 +3,7 @@
     <router-link :to="'/paginaLivro/' + livro.id" class="routerLink">
       <div class="cardLivro">
         <div @click="abrirDetalhesLivro" class="imgLivro">
-          <img :src="'http://localhost:8000' + livro.img" :alt="'Capa do livro ' + livro.titulo">
+          <img :src="'https://bytebooks.onrender.com' + livro.img" :alt="'Capa do livro ' + livro.titulo">
         </div>
         <div class="infosLivros">
           <div class="tituloEDesc">
