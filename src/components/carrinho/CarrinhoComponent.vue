@@ -10,23 +10,20 @@
                         <div class="informacoesItem">
                             <img class="imagemItem" :src="'http://localhost:8000' + item.livro.img" :alt="'Capa do livro ' + item.livro.titulo" />
                             <div class="detalhesItem">
-                            <div class="nomeItem">{{ item.livro.titulo }}</div>
-                            <p class="precoItem">R$ {{ item.livro.preco }}</p>
+                                <div class="nomeItem">{{ item.livro.titulo }}</div>
+                                <p class="precoItem">R$ {{ item.livro.preco }}</p>
                             </div>
                         </div>
                         <div class="acoesItem">
                             <div class="quantidadeControle">
-                            <button class="botaoDiminuir" @click="diminuirQuantidade(item)">
-                                <div v-if="item.quantidade > 1">
-                                    -
-                                </div>
-                                <div v-else>
-                                    <img src="../../imgs/lixeira.svg" alt="ícone lixeira" style="width: 20px; margin-top: 4px;">
-                                </div>
-                                
-                            </button>
-                            <input class="quantidadeItem" type="text" :value="item.quantidade" readonly />
-                            <button class="botaoAumentar" @click="aumentarQuantidade(item)">+</button>
+                                <button class="botaoDiminuir" @click="diminuirQuantidade(item)">
+                                    <div v-if="item.quantidade > 1">-</div>
+                                    <div v-else>
+                                        <img src="../../imgs/lixeira.svg" alt="ícone lixeira" style="width: 20px; margin-top: 4px;">
+                                    </div>
+                                </button>
+                                <input class="quantidadeItem" type="text" :value="item.quantidade" readonly />
+                                <button class="botaoAumentar" @click="aumentarQuantidade(item)">+</button>
                             </div>
                             <button class="botaoRemover" @click="removerItem(indice, item.livro.id)">Remover</button>
                         </div>
@@ -35,20 +32,38 @@
                 <div class="carrinhoVazio" v-else><p>Não há itens no carrinho.</p></div>
             </div>
 
-            <div class="ladoDireito" v-if="itensCarrinho.length" >
+            <div class="ladoDireito" v-if="itensCarrinho.length">
                 <div class="resumoCarrinho">
-                    <p class="textoResumo">Total: <strong>R$ {{ totalCarrinho }}</strong></p>
+                    <p class="textoResumo">
+                        Total:
+                        <strong>
+                            R$ {{ totalCarrinho }}
+                            <span v-if="descontoAplicado">(cupom aplicado)</span>
+                        </strong>
+                    </p>
+
                     <div class="cupomDesconto">
-                        <input class="campoCupom" type="text" placeholder="Insira seu cupom" v-model="cupomDesconto" />
+                        <input
+                            class="campoCupom"
+                            type="text"
+                            placeholder="Insira seu cupom"
+                            v-model="cupomDesconto"
+                            @keyup.enter="aplicarCupom"
+                        />
                         <button class="botaoAplicarCupom" @click="aplicarCupom">Aplicar</button>
                     </div>
+
                     <button class="botaoFinalizar" @click="irParaCompra">Finalizar Compra</button>
                 </div>
             </div>
         </div>
 
         <div v-if="finalizarCompra" class="finalizarCompra">
-            <TelaPagamento :itens="itensCarrinho" :total="Number(totalCarrinho)" @confirmarCompra="fecharCompra" />
+            <TelaPagamento
+                :itens="itensCarrinho"
+                :total="Number(totalCarrinho)"
+                @confirmarCompra="fecharCompra"
+            />
         </div>
     </div>
 </template>
@@ -56,50 +71,71 @@
 <script>
 import TelaPagamento from '../TelaPagamento.vue';
 
-export default ({
-    components: {TelaPagamento},
-    created(){
+export default {
+    components: { TelaPagamento },
+
+    created() {
         this.$store.dispatch('carregarItensCarrinho');
     },
+
     data() {
         return {
             cupomDesconto: '',
-            finalizarCompra: false
-        }
+            finalizarCompra: false,
+            descontoAplicado: 0
+        };
     },
+
     computed: {
         totalCarrinho() {
-        let total = this.itensCarrinho.reduce((acumulador, item) => 
-            acumulador + (parseFloat(item.livro.preco) * item.quantidade), 0
-        );
-        return total.toFixed(2);
+            const subtotal = this.itensCarrinho.reduce(
+                (soma, item) => soma + parseFloat(item.livro.preco) * item.quantidade,
+                0
+            );
+            const totalComDesconto = subtotal * (1 - this.descontoAplicado);
+            return totalComDesconto.toFixed(2);
         },
-        itensCarrinho(){
-        return this.$store.getters.getItensCarrinho;
+        itensCarrinho() {
+            return this.$store.getters.getItensCarrinho;
         }
     },
+
     methods: {
         aumentarQuantidade(item) {
-        this.$store.dispatch('atualizarQuantidade', { idLivro: item.livro.id, adicionar: true });
+            this.$store.dispatch('atualizarQuantidade', { idLivro: item.livro.id, adicionar: true });
         },
         diminuirQuantidade(item) {
-        this.$store.dispatch('atualizarQuantidade', { idLivro: item.livro.id, adicionar: false });
+            this.$store.dispatch('atualizarQuantidade', { idLivro: item.livro.id, adicionar: false });
         },
         removerItem(indice, id) {
-        this.$store.dispatch('removerLivroDoCarrinho', id);
-        this.itensCarrinho.splice(indice, 1);
+            this.$store.dispatch('removerLivroDoCarrinho', id);
+            this.itensCarrinho.splice(indice, 1);
         },
+
         aplicarCupom() {
-        alert(this.cupomDesconto ? `Cupom "${this.cupomDesconto}" aplicado!` : 'Digite um cupom primeiro!');
+            const cupons = {
+                CUPOM30: 0.30,
+                CUPOM50: 0.50,
+                CUPOM10: 0.10
+            };
+            const codigo = this.cupomDesconto.trim().toUpperCase();
+
+            if (codigo in cupons) {
+                this.descontoAplicado = cupons[codigo];
+            } else {
+                this.descontoAplicado = 0;
+                alert('Cupom inválido. Tente CUPOM30, CUPOM50 ou CUPOM10.');
+            }
         },
+
         irParaCompra() {
-            this.finalizarCompra = true
+            this.finalizarCompra = true;
         },
-        fecharCompra(){
-            this.finalizarCompra = false
+        fecharCompra() {
+            this.finalizarCompra = false;
         }
     }
-    })
+};
 </script>
 
 <style scoped>

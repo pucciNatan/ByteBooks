@@ -90,4 +90,7 @@ export function atualizarSaldoCliente50(){
   return apiClient.post('clientes/saldo/');
 }
 
+export function atualizarInfos(parcial) {
+  return apiClient.patch('clientes/atualizarInfos/', parcial);
+}
 

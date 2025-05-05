@@ -2,7 +2,7 @@ import { createStore } from 'vuex'
 import { fetchUltimosLancamentos, fetchMaisVendidos, fetchTodosCombos, fetchPesquisar, fetchRotaProtegida, 
   fetchDetalhesLivro, fetchDetalhesCombo, fetchCarregarCarrinho, fetchAdicionarLivroAoCarrinho, 
   fetchRemoverLivroDoCarrinho, fetchAtualizarQuantidade, fetchComprarLivro, fetchGetCliente, 
-  fetchLivroPorCategoria} from '../api/apiService.js'
+  fetchLivroPorCategoria, atualizarInfos} from '../api/apiService.js'
 import axios from 'axios'
 
 export default createStore({
@@ -102,7 +102,7 @@ export default createStore({
     },
     setCorAvatar(state, corAvatar){
       state.corAvatar = corAvatar
-    }
+    },
   },
   actions: {
     async buscarUltimosLancamentosLoja({ commit }) {
@@ -262,6 +262,18 @@ export default createStore({
       }catch(erro){
         console.error("Erro: " + erro)
       } 
-    }
+    },
+    async atualizarInfosUsuario({ commit, dispatch }, payload) {
+      try {
+        await atualizarInfos(payload);
+        commit('setNomeUsuario', payload.username)
+        await dispatch('getCliente');
+      } catch (error) {
+        const msg =
+          error.response?.data?.msg ||
+          'Não foi possível atualizar os dados.';
+        throw new Error(msg);
+      }
+    },
   }
 })

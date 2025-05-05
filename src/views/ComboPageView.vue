@@ -16,7 +16,7 @@
             <div class="titulo">{{ combo.tituloCombo }}</div>
 
             <div v-if="combo.estoque > 0" class="estoque">{{ combo.qtdVendas }} unidades vendidas</div>
-            <div v-else class="estoque">Seja o primeiro a comprar!</div>
+            <div v-else class="estoque">ESGOTADO</div>
 
             <div class="descricao scrollMinimalista" v-html="formatarDescricao(combo.descricaoDetalhada)"></div>
 
@@ -202,22 +202,11 @@ export default {
     width: 49%;
     height: 60px;
     border: none;
-    cursor: pointer;
     transition: background-color 0.3s;
     border-radius: 5px;
     overflow: hidden;
+    background-color: #3f3f3f;
     
 }
-.carrinho{
-    background-color: rgb(254, 173, 0);
-}
-.carrinho:hover{
-    background-color: rgb(220, 150, 0);
-}
-.compra{
-    background-color: #4CAF50;
-}
-.compra:hover{
-    background-color: #348d37;
-}
+
 </style>
