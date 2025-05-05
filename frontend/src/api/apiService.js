@@ -2,7 +2,8 @@ import axios from 'axios'
 import store from '../store/store.js'
 
 const apiClient = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api/',
+  //baseURL: 'http://127.0.0.1:8000/api/',
+  baseURL:'https://bytebooks.onrender.com/api/',
   headers: {
     'Content-Type': 'application/json',
   }
