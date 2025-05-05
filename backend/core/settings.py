@@ -104,7 +104,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    'https://bytebooks-kappa.vercel.app/'
+    'https://bytebooks-kappa.vercel.app'
 ]
 
 CORS_ALLOW_HEADERS = [
