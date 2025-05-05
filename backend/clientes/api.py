@@ -5,7 +5,7 @@ from django.conf import settings
 from django.shortcuts import get_object_or_404
 from datetime import datetime, timedelta
 from typing import List
-from .schemas import ClienteModel, ClienteSchemaRegister, ClienteSchemaLogin, ClienteSchema
+from .schemas import ClienteModel, ClienteSchemaRegister, ClienteSchemaLogin, ClienteSchema, ClienteSchemaUpdate
 from django.db.models import Q
 from core.auth import JWTAuth
 from carrinho.models import Carrinho
@@ -138,4 +138,48 @@ def postAtualizarSaldo50(request):
     cliente.save()
     return JsonResponse({'msg':'Saldo atualizado com sucesso!'})
 
+@clientes_router.patch(
+    "atualizarInfos/",
+    response={200: dict, 400: dict, 401: dict, 500: dict},
+    auth=JWTAuth(),
+)
+def atualizar_infos(request, dados: ClienteSchemaUpdate):
+    usuario_id = request.auth["userId"]
+    cli = get_object_or_404(ClienteModel, id=usuario_id)
 
+    try:
+        incoming = dados.dict(exclude_unset=True)
+
+        novo_email    = incoming.get("email", cli.email)
+        novo_username = incoming.get("username", cli.username)
+
+        conflito = ClienteModel.objects.filter(~Q(id=usuario_id), Q(email=novo_email) | Q(username=novo_username)
+        ).exists()
+        if conflito:
+            return JsonResponse(
+                {"msg": "Email ou Username já utilizados por outro usuário."}, status=400
+            )
+
+        # ─────────── Atualiza somente o que veio ──────────
+        if "email"       in incoming: cli.email       = incoming["email"]
+        if "username"    in incoming: cli.username    = incoming["username"]
+        if "first_name"  in incoming: cli.first_name  = incoming["first_name"]
+        if "last_name"   in incoming: cli.last_name   = incoming["last_name"]
+
+        if "dataNascimento" in incoming:
+            cli.dataNascimento = datetime.strptime(
+                incoming["dataNascimento"], "%d/%m/%Y"
+            ).date()
+
+        if incoming.get("password"):
+            cli.set_password(incoming["password"])
+
+        cli.save()
+        return JsonResponse({"msg": "Dados atualizados com sucesso!"}, status=200)
+
+    except IntegrityError:
+        return JsonResponse(
+            {"msg": "Erro de integridade (possível duplicidade)."}, status=400
+        )
+    except Exception as e:
+        return JsonResponse({"msg": f"Erro inesperado: {e}"}, status=500)
