@@ -36,4 +36,8 @@ export default {
   margin-bottom: 100px;
 }
 
+@media (max-width: 480px) {
+  .conteudoPrincipal{margin-top: 130px};
+}
+
 </style>

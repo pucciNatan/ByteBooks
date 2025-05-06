@@ -378,4 +378,148 @@ export default {
     background-color: rgb(16, 21, 26, 0.9);
 }
 
+/* ===== TABLET – até 1024 px ===== */
+@media (max-width: 1024px) {
+  .ladoDireitoEsquerdo {
+    width: 100%;
+    gap: 20px;
+  }
+
+  .ladoEsquerdo{
+    width: 70%;                  /* 100 % da tela */
+    margin-right: 0 auto;
+  }
+  .ladoDireito{
+    width: 250px;
+  }
+
+  .listaItensCarrinho {
+    height: 45vh;                 /* menor scroll */
+  }
+}
+
+/* ===== MOBILE – até 768 px ===== */
+@media (max-width: 768px) {
+
+    .containerCarrinho{
+        margin-top: 90px;
+    }
+
+  .tituloPrincipal {
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+    width:300px;
+  }
+
+  .itemCarrinho {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+    margin-right: 5px;
+  }
+
+  .informacoesItem > img {
+    width: 60px;
+  }
+
+  .nomeItem {
+    font-size: 1rem;
+  }
+
+  .precoItem {
+    font-size: 0.9rem;
+  }
+
+  .acoesItem {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .quantidadeItem {
+    width: 42px;
+  }
+
+  .botaoRemover {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .ladoDireito {
+    padding: 1rem;
+  }
+
+  .textoResumo {
+    font-size: 1rem;
+  }
+
+  .botaoFinalizar {
+    width: 100%;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 679px) {
+    .ladoDireitoEsquerdo{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 70%;
+    }
+  .containerCarrinho {
+    width: 400px;
+    min-width: 400px;
+    margin: 50px auto;
+  }
+
+.ladoEsquerdo{
+    width: 250px;
+    margin-left: 6px;
+}
+  .listaItensCarrinho {
+    height: 37vh;
+    max-height: 45vh;
+  }
+
+  .informacoesItem {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin: 1px auto;
+  }
+
+  .acoesItem {
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .quantidadeControle {
+    gap: 2px;
+  }
+
+  .botaoDiminuir,
+  .botaoAumentar {
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
+  }
+
+  .botaoRemover {
+    width: 100%;
+    text-align: center;
+  }
+
+  .cupomDesconto {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .campoCupom,
+  .botaoAplicarCupom {
+    width: 100%;
+  }
+}
+
+
 </style>

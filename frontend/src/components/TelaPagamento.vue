@@ -305,10 +305,65 @@ export default {
 
   }
   
-  /* -------- MOBILE -------- */
-  @media (max-width: 600px) {
-    .main { flex-direction: column; gap: 1.5rem; }
-    .carrinho { max-height: calc(var(--item-h) * 2.5 + 1.5rem); }
-  }
+  /* -------- MOBILE (≤ 600 px) ------------------- */
+@media (max-width: 680px) {
+
+/* modal ocupa 92 % da largura, centralizado */
+.main{
+  width: 60%;                 /* folga dos dois lados */
+  max-width: 360px;            /* evita ficar largo demais em tablets */
+  padding: 1.25rem;            /* respiro interno menor */
+  flex-direction: column;      /* empilha colunas */
+  gap: 1.25rem;
+}
+
+/* colunas agora são blocos de 100 % */
+.colunas{
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.colunaEsquerda,
+.colunaDireita{
+  flex: 1 1 100%;
+}
+
+/* lista dentro da coluna direita com altura menor */
+.carrinho{
+  max-height: calc(var(--item-h) * 3 + 1rem); /* ~3 itens visíveis */
+}
+
+/* botões ocupam largura total e ficam mais altos */
+.botaoAdd,
+.botaoConfirmar{
+  width: 100%;
+  padding: 0.8rem 1rem;
+  font-size: 1.05rem;
+}
+
+/* campo + botão do cupom empilham */
+.cupomDesconto{
+  flex-direction: column;
+  gap: 8px;
+}
+.campoCupom,
+.botaoAplicarCupom{
+  width: 100%;
+}
+
+/* título do livro não “quebra” colado */
+.tituloLivro{
+  font-size: 0.95rem;
+}
+
+/* área de clicar no X maior e afastada da borda */
+.fecharCompra{
+  top: 10px;
+  right: 18px;
+  font-size: 1.5rem;
+  line-height: 1;
+  padding: 4px 8px;
+}
+}
+
   </style>
   

@@ -302,6 +302,56 @@ export default ({
     .item > img.backendImg {
         margin-right: 3px;
     }
+
+@media (max-width: 768px) {
+
+    /* navbar vira “wrap” pra itens descerem em linha nova */
+    .navbar{
+    flex-wrap: wrap;
+    height: auto;      
+    }
+
+    /* logo um pouco menor */
+    .logo>img{
+    width: 100px;
+    }
+
+    /* lista de links ocupa 100 % e vira scroll-x (ou mude p/ column) */
+    .listaItens{
+    width: 95%;
     
+    overflow-x: auto;
+    justify-content: space-around;
+    padding: .5rem 0;
+    }
+
+    /* cada item fica compacto */
+    .item>img{
+    width: 24px;
+    }
+    .item li{
+    font-size: .73rem;
+    }
+
+    /* barra de pesquisa expande e pega linha inteira */
+    .barraPesquisa{
+    width: 60%;
+    max-width: 30vh;
+    margin: .5rem 0;
+    }
+
+    /* avatar + carrinho alinham no canto direito */
+    .carrinho,
+    .avatar-wrapper{
+    margin-left: .5rem;
+    }
+
+    /* opcional: esconde hover-swap dos ícones no touch */
+    .rotasNavbar:hover .normal,
+    .rotasNavbar:hover .hover{
+    display:inline;        /* mantém o mesmo ícone sem troca */
+    }
+}
+
 
 </style>

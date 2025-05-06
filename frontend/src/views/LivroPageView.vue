@@ -337,4 +337,126 @@ router-link{
     cursor: auto;
 }
 
+/* ====== TABLET – até 1024 px ====== */
+@media (max-width: 1024px) {
+  .containerPagProduto {
+    justify-content: center;
+    align-items: center;
+    margin-top: 70px;
+    width: 600px;
+    height: auto;
+    flex-direction: column;
+  }
+
+  .conteudoEsquerda,
+  .conteudoDireita {
+    width: 100%;
+  }
+
+  .imgProduto {
+    width: 95%;
+  }
+  .imgProduto img {
+    max-width: 280px;
+    height: auto;
+  }
+
+  .metadados {
+    width: 100%;
+  }
+  .quadradosInfos {
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+  }
+  .quadrado {
+    flex: 1 1 calc(33.333% - 8px);
+    max-width: 170px;
+  }
+
+  .descricao{
+    margin-top: 10px;
+  }
+
+  .conteudoDireita {
+    max-height: none;
+    margin-top: 24px;
+  }
+  .adicionadoAoCarrinho {
+    margin-left: 0;
+    margin-top: 40px;
+    font-size: 1rem;
+    height: 100px;
+    width: 90%;
+  }
+}
+
+/* ====== MOBILE – até 768 px ====== */
+@media (max-width: 768px) {
+  .titulo {
+    font-size: 26px;
+  }
+  .descricao {
+    height: 160px;
+    font-size: 14px;
+  }
+  .preco {
+    font-size: 28px;
+  }
+  .botao {
+    height: 52px;
+    font-size: 16px;
+  }
+  .carrinho,
+  .compra {
+    font-size: 16px;
+  }
+  .adicionadoAoCarrinho {
+    margin-left: 0;
+    font-size: 1rem;
+    height: 100px;
+  }
+}
+
+/* ====== SMALL MOBILE – até 480 px ====== */
+@media (max-width: 480px) {
+    .containerPagProduto{
+        width: 80%;
+    }
+  .imgProduto {
+    padding: 10px;
+  }
+  .imgProduto img {
+    max-width: 220px;
+  }
+
+  .quadrado {
+    flex: 1 1 100%;
+    max-width: 30%;
+    font-size: 15px;
+  }
+  .quadrado > strong {
+    font-size: 14px;
+  }
+
+  .descricao {
+    height: 140px;
+  }
+
+  .botoes {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .botao {
+    width: 100%;
+  }
+
+  .adicionadoAoCarrinho {
+    margin-left: 0;
+    font-size: 1rem;
+    height: 100px;
+  }
+}
+
+
 </style>

@@ -20,5 +20,8 @@
     background-color: #f1f1f1; /* Exemplo de cor de fundo */
     padding: 16px;
   }
+  .container{
+    text-align: center;
+  }
   </style>
   

@@ -343,4 +343,13 @@ export default {
 }
 .sucesso { background: #00800033; color: #32cd32; }
 .erro    { background: #ff000033; color: #ff4500; }
+
+@media (max-width: 480px) {
+  .pai{
+    margin-top: 60px;
+  }
+  .containerFilho {
+    width: 85%;
+  }
+}
 </style>
