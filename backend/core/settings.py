@@ -9,7 +9,7 @@ MY_SECRET = 'muito_secreta_mds'
 
 ACCESS_TOKEN_EXPIRE = 5
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     'bytebooks-backend.fly.dev',
