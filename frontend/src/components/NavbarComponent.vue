@@ -331,6 +331,9 @@ button > img {
   background-color: #d600d6;
 }
 
+.entrar{
+  height: 100%;
+}
 .botaoEntrar {
   margin: auto;
   display: flex;
@@ -392,10 +395,6 @@ button > img {
     margin-left: 0.5rem;
   }
 
-  .rotasNavbar:hover .normal,
-  .rotasNavbar:hover .hover {
-    display: inline;
-  }
   .rotasNavbar.router-link-active .normal,
   .rotasNavbar.router-link-exact-active .normal {
     display: none;
@@ -404,17 +403,19 @@ button > img {
   .rotasNavbar.router-link-exact-active .hover {
     display: inline;
   }
-    .rotasNavbar:hover::after,
-    .rotasNavbar.router-link-active::after {
+
+  .rotasNavbar:hover::after,
+  .rotasNavbar.router-link-active::after {
     content: "";
     position: absolute;
     bottom: 0;
     left: 0;
     width: 0%;
     height: 0px;
-    }
+  }
+
   .cadastroELogin:hover::after {
     width: 0%;
-}
+  }
 }
 </style>
