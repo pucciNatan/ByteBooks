@@ -8,6 +8,7 @@ RUN mkdir -p /code
 WORKDIR /code
 
 RUN mkdir -p /data
+RUN mkdir -p /data/staticfiles
 
 COPY requirements.txt /tmp/requirements.txt
 RUN set -ex && \

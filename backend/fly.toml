@@ -29,10 +29,6 @@ console_command = "/code/manage.py shell"
   cpu_kind  = "shared"
   cpus      = 1
 
-[[statics]]
-  guest_path = "/data/staticfiles"
-  url_prefix = "/static/"
-
 [deploy]
   release_command = "bash -c 'python manage.py migrate --noinput && python manage.py collectstatic --noinput && python manage.py createsuperuser --no-input || true'"
 
