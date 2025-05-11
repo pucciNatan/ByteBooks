@@ -17,5 +17,8 @@ primary_region = "gru"
   force_https   = true
 
 [deploy]
-  # migrações + superuser (static já coletado na build)
   release_command = "bash -c 'python manage.py migrate --noinput && python manage.py createsuperuser --no-input || true'"
+
+  [[deploy.mounts]]
+    source      = "data"
+    destination = "/data"

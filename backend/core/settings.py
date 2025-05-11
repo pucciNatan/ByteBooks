@@ -9,7 +9,7 @@ MY_SECRET = 'muito_secreta_mds'
 
 ACCESS_TOKEN_EXPIRE = 5
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     'bytebooks-backend.fly.dev',
@@ -84,8 +84,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL  = "/media/"
+MEDIA_ROOT = "/data/media"     # persistente
 
 LANGUAGE_CODE = 'pt-br'
 
