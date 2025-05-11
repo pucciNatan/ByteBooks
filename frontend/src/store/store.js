@@ -103,6 +103,12 @@ export default createStore({
     setCorAvatar(state, corAvatar){
       state.corAvatar = corAvatar
     },
+    limparLivrosPesquisados(state) {
+      state.livrosPesquisados = [];
+    },
+    limparUltimosLancamentos(state) {
+      state.ultimosLancamentosLoja = [];
+    },
   },
   actions: {
     async buscarUltimosLancamentosLoja({ commit }) {

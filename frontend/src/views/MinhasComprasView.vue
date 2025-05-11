@@ -31,38 +31,54 @@ export default{
 </script>
 
 <style scoped>
-    .main{
-        font-family: 'Roboto', sans-serif;
-        width: 90%;
-        margin: 30px auto;
-        min-height: 600px;
-    }
-    .pesquisandoPor{
-        margin-top: 50px;
-        color: white;
-        font-size: 30px;
-        margin-bottom: 30px;
-    }
-    .livrosEncontrados{
-        display: grid;
-        gap: 50px;                            
-        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    }
-    .livroEncontrado{
-        position: relative;
-        margin-bottom: 25px;
-    }
-    .naoHaLivros{
-        font-size: 20px;
-        color: rgba(242, 242, 242, 0.9);
-    }
-    .qtdLivrosComprados{
-        top: -35px;
-        font-size: 20px;
-        color: rgb(236, 236, 236);
-        right: 10px;
-        width: 15%;
-        overflow: hidden;
-        position: absolute;
-    }
+.main{
+    font-family: 'Roboto', sans-serif;
+    width: 90%;
+    margin: 30px auto;
+    min-height: 600px;
+}
+.pesquisandoPor{
+    margin-top: 50px;
+    color: white;
+    font-size: 30px;
+    margin-bottom: 30px;
+}
+.livrosEncontrados{
+    display: grid;
+    gap: 50px;                            
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+.livroEncontrado{
+    position: relative;
+    margin-bottom: 25px;
+}
+.naoHaLivros{
+    font-size: 20px;
+    color: rgba(242, 242, 242, 0.9);
+}
+.qtdLivrosComprados{
+    top: -35px;
+    font-size: 20px;
+    color: rgb(236, 236, 236);
+    right: 10px;
+    width: 15%;
+    overflow: hidden;
+    position: absolute;
+}
+
+@media (max-width: 760px) {
+  .pesquisandoPor {
+    font-size: 1.25rem;
+  }
+
+  .livrosEncontrados {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 20px;
+  }
+
+  .qtdLivrosComprados {
+    top: -24px;
+    font-size: 0.875rem;
+  }
+}
 </style>

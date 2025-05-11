@@ -1,23 +1,19 @@
 <template>
   <div class="pai">
-    <!-- Mensagens -->
     <div v-if="mensagem" :class="['alerta', tipoMensagem]">
       {{ mensagem }}
     </div>
 
     <div class="containerFilho" :style="containerStyle">
-      <!-- Avatar -->
       <div class="iconePerfil" :style="avatarStyle">
         {{ inicialUsuario }}
       </div>
 
-      <!-- Username -->
       <div class="campoGrande">
         <label>Username</label>
         <input type="text" v-model="infosUsuario.username" />
       </div>
 
-      <!-- Nome / Sobrenome -->
       <div class="campoMetade">
         <input
           type="text"
@@ -31,7 +27,6 @@
         />
       </div>
 
-      <!-- Data de nascimento -->
       <div class="dataNascimento">
         <label>Data de nascimento:</label>
         <div class="data">
@@ -55,13 +50,11 @@
         </div>
       </div>
 
-      <!-- Email -->
       <div class="campoGrande">
         <label>Email</label>
         <input type="text" v-model="infosUsuario.email" />
       </div>
 
-      <!-- Senhas -->
       <div class="campoMetade">
         <input
           type="password"
@@ -75,7 +68,6 @@
         />
       </div>
 
-      <!-- Botão -->
       <button
         class="btnSalvar"
         :class="{ desabilitado: !formAlterado }"
@@ -106,12 +98,11 @@ export default {
       mensagem: '',
       tipoMensagem: '',
 
-      originalInfo: null     // snapshot inicial para comparação
+      originalInfo: null
     };
   },
 
   computed: {
-    /* Vuex */
     infosUsuario() { return this.$store.getters.getInfosUsuario; },
     corAvatar()    { return this.$store.getters.getCorAvatar; },
 
@@ -137,7 +128,6 @@ export default {
       };
     },
 
-    /* Datas no mesmo formato ISO yyyy-MM-dd */
     dataOriginalISO() { return this.originalInfo?.dataNascimento || ''; },
     dataAtualISO() {
       if (!this.anoNascimento || !this.mesNascimento || !this.diaNascimento)
@@ -151,7 +141,6 @@ export default {
       );
     },
 
-    /* Habilita / desabilita botão */
     formAlterado() {
       if (!this.originalInfo) return false;
 
@@ -168,7 +157,6 @@ export default {
   },
 
   watch: {
-    /* guarda snapshot assim que infosUsuario chega */
     infosUsuario: {
       immediate: true,
       handler(val) {
@@ -176,7 +164,6 @@ export default {
         this.originalInfo = JSON.parse(JSON.stringify(val));
       }
     },
-    /* preenche selects */
     'infosUsuario.dataNascimento': {
       immediate: true,
       handler(val) {
@@ -220,7 +207,6 @@ export default {
         this.mensagem = 'Dados atualizados com sucesso!';
         this.tipoMensagem = 'sucesso';
         this.novaSenha = this.repetirSenha = '';
-        // tira novo snapshot
         this.originalInfo = JSON.parse(JSON.stringify(this.infosUsuario));
         this.originalInfo.dataNascimento = this.dataAtualISO;
       } catch (err) {
@@ -233,7 +219,6 @@ export default {
 </script>
 
 <style scoped>
-/* layout geral */
 .pai {
   display: flex;
   flex-direction: column;
@@ -257,7 +242,6 @@ export default {
   border-radius: 8px;
 }
 
-/* avatar */
 .iconePerfil {
   display: flex;
   align-items: center;
@@ -268,7 +252,6 @@ export default {
   border-radius: 50%;
 }
 
-/* campos */
 .campoGrande {
   width: 85%;
   display: flex;
@@ -333,7 +316,6 @@ export default {
   opacity: 0.6;
 }
 
-/* mensagens */
 .alerta {
   width: 300px;
   padding: 8px 12px;

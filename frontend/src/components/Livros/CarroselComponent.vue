@@ -1,36 +1,20 @@
 <template>
   <div class="carroselContainer">
     <div class="carrossel">
-      <div
-        class="carroselItens"
-        :style="{ transform: `translateX(-${offset}%)` }"
-      >
-        <div
-          v-for="item in livros"
-          :key="item.id"
-          :style="{ flex: `0 0 calc(100% / ${itensVisiveis})` }"
-          class="itemCarrosel"
-        >
+      <div class="carroselItens" :style="{ transform: `translateX(-${offset}%)` }">
+        <div v-for="item in livros" :key="item.id" :style="{ flex: `0 0 calc(100% / ${itensVisiveis})` }" class="itemCarrosel">
           <LivroCard v-if="tipo !== 'combos'" :livro="item" />
           <ComboCard v-else :combo="item" />
         </div>
       </div>
 
       <transition name="fade">
-        <button
-          v-if="indiceAtual > 0"
-          @click="anterior"
-          class="seta setaEsquerda"
-        >
+        <button v-if="indiceAtual > 0" @click="anterior" class="seta setaEsquerda">
           &lt;
         </button>
       </transition>
       <transition name="fade">
-        <button
-          v-if="indiceAtual + itensVisiveis < livros.length"
-          @click="proximo"
-          class="seta setaDireita"
-        >
+        <button v-if="indiceAtual + itensVisiveis < livros.length" @click="proximo" class="seta setaDireita">
           &gt;
         </button>
       </transition>
@@ -88,7 +72,7 @@ export default {
       const tipoCombo = this.tipo === 'combos'
 
       if (w <= 480) {
-        this.itensVisiveis = tipoCombo ? 1 : 2
+        this.itensVisiveis = tipoCombo ? 2 : 2
       } else if (w <= 768) {
         this.itensVisiveis = tipoCombo ? 2 : 3
       } else if (w <= 1024) {
@@ -172,7 +156,6 @@ export default {
   opacity: 0;
 }
 
-/* ↓ ajusta altura e tamanho das setas no mobile */
 @media (max-width: 768px) {
   .carroselContainer {
     height: 310px;

@@ -169,6 +169,7 @@ export default {
     flex-direction: column;
     align-items:center;
     justify-content: center;
+    text-align: center;
     font-size: 17px;
     border-radius: 6px;
     background-color: rgb(255, 255, 255);

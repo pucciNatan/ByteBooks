@@ -56,32 +56,48 @@
 
       <div class="input-group">
         <input
-          type="password"
+          :type="mostrarSenha ? 'text' : 'password'"
           placeholder="Senha"
           v-model="senha"
           required
           :class="{ 'error-input': errors.passwordComplexity || errors.passwordMismatch }"
         />
+        <img :src="iconSenha" alt="Alternar senha" @click="toggleSenha" />
       </div>
 
       <div class="input-group">
         <input
-          type="password"
+          :type="mostrarSenhaRep ? 'text' : 'password'"
           placeholder="Repetir senha"
           v-model="senhaRepetida"
           required
           :class="{ 'error-input': errors.passwordMismatch }"
         />
+        <img :src="iconSenhaRep" alt="Alternar senha" @click="toggleSenhaRep" />
       </div>
 
-      <input class="register-button" type="submit" value="Cadastre-se" />
+      <button
+        ref="registerBtn"
+        class="register-button"
+        type="submit"
+        :disabled="loading"
+        :style="btnWidth ? { width: btnWidth } : null"
+      >
+        <img v-if="loading" :src="loadGif" alt="Carregando" class="loading-img" />
+        <span v-else>Cadastre-se</span>
+      </button>
+
       <router-link to="/login" class="routerLink">Já tem uma conta?</router-link>
     </div>
   </form>
 </template>
 
+
 <script>
 import axios from 'axios'
+import olhoAberto from '../../imgs/olhoAberto.svg'
+import olhoFechado from '../../imgs/olhoFechado.svg'
+import loadGif from '../../imgs/loadGif.gif'
 
 export default {
   data() {
@@ -95,29 +111,35 @@ export default {
       email: '',
       senha: '',
       senhaRepetida: '',
+      mostrarSenha: false,
+      mostrarSenhaRep: false,
+      loading: false,
+      btnWidth: null,
       errorMessage: '',
       errors: {
         passwordComplexity: false,
         passwordMismatch: false,
-        emailOrUsernameExists: false
+        emailOrUsernameExists: false,
       },
-      meses: [
-        'Jan',
-        'Fev',
-        'Mar',
-        'Abr',
-        'Mai',
-        'Jun',
-        'Jul',
-        'Ago',
-        'Set',
-        'Out',
-        'Nov',
-        'Dez'
-      ]
+      meses: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+      loadGif,
     }
   },
+  computed: {
+    iconSenha() {
+      return this.mostrarSenha ? olhoFechado : olhoAberto
+    },
+    iconSenhaRep() {
+      return this.mostrarSenhaRep ? olhoFechado : olhoAberto
+    },
+  },
   methods: {
+    toggleSenha() {
+      this.mostrarSenha = !this.mostrarSenha
+    },
+    toggleSenhaRep() {
+      this.mostrarSenhaRep = !this.mostrarSenhaRep
+    },
     validarSenha() {
       const regex = /^(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/
       return regex.test(this.senha)
@@ -150,10 +172,13 @@ export default {
         last_name: this.sobrenome,
         dataNascimento: `${this.diaNascimento}/${this.mesNascimento}/${this.anoNascimento}`,
         email: this.email,
-        password: this.senha
+        password: this.senha,
       }
 
       try {
+        this.loading = true
+        this.btnWidth = this.$refs.registerBtn.offsetWidth + 'px'
+
         const response = await axios.post(
           //'http://127.0.0.1:8000/api/clientes/registro/',
           'https://bytebooks.onrender.com/api/clientes/registro/',
@@ -165,7 +190,6 @@ export default {
           this.$router.push('/login')
         }
       } catch (error) {
-        console.log('Erro na chamada Axios:', error)
         if (error.response && error.response.status === 400) {
           const msg = error.response.data.msg || ''
           if (msg.includes('Email ou Username já cadastrado')) {
@@ -177,14 +201,15 @@ export default {
         } else {
           this.errorMessage = error.message || 'Ocorreu um erro inesperado.'
         }
+      } finally {
+        this.loading = false
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style scoped>
-/* ===== DESKTOP / BASE ===== */
 .card {
   display: flex;
   flex-direction: column;
@@ -222,6 +247,22 @@ h2 {
   align-items: center;
 }
 
+.input-group {
+  position: relative;
+}
+
+.input-group img {
+  position: absolute;
+  right: 10px;
+  top: 9px;
+  width: 20px;
+  cursor: pointer;
+}
+
+.input-group input {
+  padding-right: 46px;
+}
+
 input,
 .select {
   padding: 10px;
@@ -240,14 +281,29 @@ input,
   background-color: #0f0f0f;
   color: #fff;
   border: none;
+  width: 100%;
   padding: 12px;
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
   transition: background-color 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
 }
 .register-button:hover {
   background-color: #1f1f1f;
+}
+.register-button:disabled {
+  opacity: 0.8;
+  cursor: default;
+}
+
+.loading-img {
+  width: 20px;
+  height: 20px;
+  transform: scale(1.4);
 }
 
 a {
@@ -266,7 +322,6 @@ a {
   text-decoration: underline;
 }
 
-/* ===== MOBILE ===== */
 @media (max-width: 480px) {
   .card {
     margin-top: 60px;

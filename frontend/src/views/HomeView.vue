@@ -35,7 +35,9 @@ import CarroselComponent from '../components/Livros/CarroselComponent.vue'
 export default {
   components: {CarroselComponent},
   created(){
-    this.$store.dispatch('carregarItensCarrinho');
+    if (this.$store.getters.getToken !== ''){
+      this.$store.dispatch('carregarItensCarrinho');
+    }
   }
 }
 </script>
@@ -66,5 +68,11 @@ export default {
     font-family: 'Roboto', sans-serif;
     margin-top: 10px;
     display: inline-block;
+  }
+
+  @media (max-width: 786px) {
+    .titulo{
+      font-size: 1.6rem;
+    }
   }
 </style>

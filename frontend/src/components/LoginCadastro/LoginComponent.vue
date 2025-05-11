@@ -3,9 +3,7 @@
     <div class="card">
       <h2>Fazer login</h2>
 
-      <div v-if="errorMessage" class="error-message">
-        {{ errorMessage }}
-      </div>
+      <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
 
       <div class="input-group">
         <label>Email ou Username</label>
@@ -19,55 +17,90 @@
 
       <div class="input-group">
         <input
-          type="password"
+          :type="mostrarSenha ? 'text' : 'password'"
           placeholder="Senha"
           v-model="senha"
           required
         />
+        <img :src="iconSenha" alt="Alternar senha" @click="toggleSenha" />
       </div>
 
-      <input class="login-button" type="submit" value="Entrar" />
+      <button
+        ref="loginBtn"
+        class="login-button"
+        type="submit"
+        :disabled="loading"
+        :style="btnWidth ? { width: btnWidth } : null"
+      >
+        <img
+          v-if="loading"
+          :src="loadGif"
+          alt="Carregando"
+          class="loading-img"
+        />
+        <span v-else>Entrar</span>
+      </button>
+
       <div>
         Não tem uma conta?
-        <router-link to="/cadastro" class="routerLink">Cadastre-se</router-link>
+        <router-link to="/cadastro" class="routerLink"
+          >Cadastre-se</router-link
+        >
       </div>
     </div>
   </form>
 </template>
 
 <script>
+import olhoAberto from '../../imgs/olhoAberto.svg'
+import olhoFechado from '../../imgs/olhoFechado.svg'
+import loadGif from '../../imgs/loadGif.gif'
+
 export default {
   data() {
     return {
       emailUsername: '',
       senha: '',
-      errorMessage: ''
+      errorMessage: '',
+      mostrarSenha: false,
+      loading: false,
+      btnWidth: null,
+      loadGif,
     }
   },
+  computed: {
+    iconSenha() {
+      return this.mostrarSenha ? olhoFechado : olhoAberto
+    },
+  },
   methods: {
+    toggleSenha() {
+      this.mostrarSenha = !this.mostrarSenha
+    },
     logarCliente() {
       this.errorMessage = ''
+      this.loading = true
+      this.btnWidth = this.$refs.loginBtn.offsetWidth + 'px'
 
       const dados = {
         emailUsername: this.emailUsername,
-        password: this.senha
+        password: this.senha,
       }
-
       this.$store
         .dispatch('logarUsuario', dados)
-        .then(() => {
-          this.$router.push('/')
-        })
-        .catch(error => {
+        .then(() => this.$router.push('/'))
+        .catch((error) => {
           this.errorMessage = error.message
         })
-    }
-  }
+        .finally(() => {
+          this.loading = false
+        })
+    },
+  },
 }
 </script>
 
 <style scoped>
-/* ===== DESKTOP / BASE ===== */
 .card {
   display: flex;
   flex-direction: column;
@@ -88,10 +121,26 @@ h2 {
 }
 
 .input-group {
+  position: relative;
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.input-group img {
+  position: absolute;
+  right: 10px;
+  top: 9px;
+  width: 20px;
+  margin-left: 20px;
+}
+.input-group img:hover {
+  cursor: pointer;
+}
+
+.input-group input {
+  padding-right: 46px;
 }
 
 input,
@@ -108,14 +157,29 @@ input,
   background-color: #0f0f0f;
   color: #fff;
   border: none;
+  width: 100%;
   padding: 12px;
   border-radius: 4px;
   cursor: pointer;
   font-size: 16px;
   transition: background-color 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
 }
 .login-button:hover {
   background-color: #1f1f1f;
+}
+.login-button:disabled {
+  opacity: 0.8;
+  cursor: default;
+}
+
+.loading-img {
+  width: 20px;
+  height: 20px;
+  transform: scale(1.4);
 }
 
 a {
@@ -133,7 +197,6 @@ a {
   text-decoration: underline;
 }
 
-/* ===== MOBILE ===== */
 @media (max-width: 480px) {
   .card {
     width: 70%;
@@ -154,6 +217,10 @@ a {
   .login-button {
     padding: 14px;
     font-size: 18px;
+  }
+
+  .input-group img {
+    top: 12px;
   }
 }
 </style>

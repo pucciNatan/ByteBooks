@@ -17,7 +17,7 @@
     align-items: center;
     justify-content: center;
     height: 100px;
-    background-color: #f1f1f1; /* Exemplo de cor de fundo */
+    background-color: #f1f1f1;
     padding: 16px;
   }
   .container{

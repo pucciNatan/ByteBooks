@@ -1,6 +1,5 @@
 <template>
   <div class="main">
-    <!-- COLUNA ESQUERDA -->
     <div class="colunas" v-if="!compradoComSucesso">
       <div class="colunaEsquerda">
       <label class="tituloColuna">Seu saldo</label>
@@ -19,8 +18,8 @@
         <label>Saldo final</label>
         <span>R$ {{ getSaldoFinal() }}</span>
       </div>
-
-      <button class="botaoConfirmar" @click="finalizarCompra">
+      
+      <button class="botaoConfirmar" :class="getSaldoFinal() >= 0 ? 'compra' : 'naoLiberado'" @click="finalizarCompra">
         Finalizar compra
       </button>
     </div>
@@ -68,6 +67,11 @@ export default {
       compradoComSucesso: false
     };
   },
+  beforeCreate(){
+    if (this.$store.getters.getToken == ''){
+        this.$router.push('/login');
+    }
+  },
   async created() {
     try {
       const res = await getSaldoCliente();
@@ -78,16 +82,18 @@ export default {
   },
   methods:{
     async finalizarCompra() {
-      await Promise.all(
-        this.itens.map(({ livro, quantidade }) =>
-          this.$store.dispatch("comprarLivro", { idLivro: livro.id, quantidade }),
-        )
-      );
+      if (this.getSaldoFinal() > 0){
+        await Promise.all(
+          this.itens.map(({ livro, quantidade }) =>
+            this.$store.dispatch("comprarLivro", { idLivro: livro.id, quantidade }),
+          )
+        );
 
-      await this.$store.dispatch("carregarItensCarrinho");
-      const { data } = await getSaldoCliente();
-      this.saldoCliente = Number(data.saldo ?? data);
-      this.compradoComSucesso = true;
+        await this.$store.dispatch("carregarItensCarrinho");
+        const { data } = await getSaldoCliente();
+        this.saldoCliente = Number(data.saldo ?? data);
+        this.compradoComSucesso = true;
+      }
     },
     getSaldoFinal(){
       const saldoFinal = (this.saldoCliente - parseFloat(this.total)).toFixed(2)
@@ -105,7 +111,6 @@ export default {
 };
 </script>
   
-  <!-- VARIÁVEIS GLOBAIS -->
   <style>
   :root {
     --bg-card: #1f242d;
@@ -116,7 +121,7 @@ export default {
     --primaria: #009405;
     --primaria-hover: #00b306;
     --radius: 8px;
-    --item-h: 60px; /* ~90px capa + paddings */
+    --item-h: 60px;
   }
   </style>
   
@@ -139,7 +144,6 @@ export default {
     gap: 2rem;
   }
   
-  /* -------- ESQUERDA -------- (sem mudanças) */
   .colunaEsquerda {
     flex: 1 1 45%;
     display: flex;
@@ -193,7 +197,6 @@ export default {
   }
   
   .botaoConfirmar {
-    background: var(--primaria);
     color: #fff;
     border: none;
     border-radius: var(--radius);
@@ -203,9 +206,16 @@ export default {
     transition: background 0.15s ease;
     width: 100%;
   }
-  .botaoConfirmar:hover { background: var(--primaria-hover); }
+  .compra{
+    background: var(--primaria);
+  }
+
+  .naoLiberado{
+    background-color: #3a3a3a;
+    cursor:auto;
+  }
+  .compra:hover { background: var(--primaria-hover); }
   
-  /* -------- DIREITA -------- */
   .colunaDireita {
     flex: 1 1 45%;
     display: flex;
@@ -222,7 +232,6 @@ export default {
     max-height: calc(var(--item-h) * 3.7 + 2rem);
   }
   
-  /* Scrollbar minimalista (WebKit) */
   .carrinho::-webkit-scrollbar {
     width: 4px;
   }
@@ -305,19 +314,15 @@ export default {
 
   }
   
-  /* -------- MOBILE (≤ 600 px) ------------------- */
 @media (max-width: 680px) {
-
-/* modal ocupa 92 % da largura, centralizado */
 .main{
-  width: 60%;                 /* folga dos dois lados */
-  max-width: 360px;            /* evita ficar largo demais em tablets */
-  padding: 1.25rem;            /* respiro interno menor */
-  flex-direction: column;      /* empilha colunas */
+  width: 60%;                 
+  max-width: 360px;           
+  padding: 1.25rem;            
+  flex-direction: column;      
   gap: 1.25rem;
 }
 
-/* colunas agora são blocos de 100 % */
 .colunas{
   flex-direction: column;
   gap: 1.25rem;
@@ -327,12 +332,10 @@ export default {
   flex: 1 1 100%;
 }
 
-/* lista dentro da coluna direita com altura menor */
 .carrinho{
-  max-height: calc(var(--item-h) * 3 + 1rem); /* ~3 itens visíveis */
+  max-height: calc(var(--item-h) * 3 + 1rem);
 }
 
-/* botões ocupam largura total e ficam mais altos */
 .botaoAdd,
 .botaoConfirmar{
   width: 100%;
@@ -340,7 +343,6 @@ export default {
   font-size: 1.05rem;
 }
 
-/* campo + botão do cupom empilham */
 .cupomDesconto{
   flex-direction: column;
   gap: 8px;
@@ -350,12 +352,10 @@ export default {
   width: 100%;
 }
 
-/* título do livro não “quebra” colado */
 .tituloLivro{
   font-size: 0.95rem;
 }
 
-/* área de clicar no X maior e afastada da borda */
 .fecharCompra{
   top: 10px;
   right: 18px;

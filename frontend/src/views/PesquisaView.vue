@@ -1,6 +1,5 @@
 <template>
   <div class="main">
-    <!-- a chave força o Vue recriar o componente sempre que rota muda -->
     <SessaoPesquisa
       :key="`${$route.params.categoria || ''}-${$route.params.livro || ''}`"
       :tipo="categoria"

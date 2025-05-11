@@ -346,26 +346,26 @@ export default {
 }
 
 .listaItensCarrinho::-webkit-scrollbar {
-  width: 6px;               /* Largura da barra */
+  width: 6px;           
 }
 
 .listaItensCarrinho::-webkit-scrollbar-track {
-  background: #2f2f2f;      /* Cor do "trilho" */
+  background: #2f2f2f;     
 }
 
 .listaItensCarrinho::-webkit-scrollbar-thumb {
-  background-color: #444;   /* Cor do "thumb" */
-  border-radius: 4px;       /* Bordas arredondadas */
+  background-color: #444;  
+  border-radius: 4px;      
 }
 
 .listaItensCarrinho::-webkit-scrollbar-thumb:hover {
-  background-color: #555;   /* Ao passar o mouse */
+  background-color: #555;  
 }
 
 .listaItensCarrinho {
-  scrollbar-width: thin;            /* Deixa mais fino */
+  scrollbar-width: thin;           
   scroll-margin-right: 10px;
-  scrollbar-color: #444 #2f2f2f;    /* thumb | track */
+  scrollbar-color: #444 #2f2f2f;    
 }
 
 .finalizarCompra{
@@ -378,7 +378,6 @@ export default {
     background-color: rgb(16, 21, 26, 0.9);
 }
 
-/* ===== TABLET – até 1024 px ===== */
 @media (max-width: 1024px) {
   .ladoDireitoEsquerdo {
     width: 100%;
@@ -386,7 +385,7 @@ export default {
   }
 
   .ladoEsquerdo{
-    width: 70%;                  /* 100 % da tela */
+    width: 70%;                 
     margin-right: 0 auto;
   }
   .ladoDireito{
@@ -394,12 +393,11 @@ export default {
   }
 
   .listaItensCarrinho {
-    height: 45vh;                 /* menor scroll */
+    height: 45vh;              
   }
 }
 
-/* ===== MOBILE – até 768 px ===== */
-@media (max-width: 768px) {
+@media (max-width: 765px) {
 
     .containerCarrinho{
         margin-top: 90px;
@@ -413,6 +411,7 @@ export default {
 
   .itemCarrinho {
     flex-direction: column;
+    width: 150px;
     align-items: flex-start;
     gap: 12px;
     margin-right: 5px;
@@ -466,33 +465,35 @@ export default {
         align-items: center;
         width: 70%;
     }
-  .containerCarrinho {
-    width: 400px;
-    min-width: 400px;
-    margin: 50px auto;
-  }
+    .containerCarrinho {
+        width: 400px;
+        min-width: 400px;
+        margin: 50px auto;
+    }
 
-.ladoEsquerdo{
-    width: 250px;
-    margin-left: 6px;
-}
-  .listaItensCarrinho {
-    height: 37vh;
-    max-height: 45vh;
-  }
+    .ladoEsquerdo{
+        width: 250px;
+        margin-left: 6px;
+    }
+    .listaItensCarrinho {
+        height: 36vh;
+        justify-content: center;
+        align-items: center;
+        max-height: 45vh;
+    }
 
-  .informacoesItem {
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-    margin: 1px auto;
-  }
+    .informacoesItem {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        margin: 1px auto;
+    }
 
-  .acoesItem {
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-  }
+    .acoesItem {
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+    }
 
   .quantidadeControle {
     gap: 2px;
@@ -506,7 +507,7 @@ export default {
   }
 
   .botaoRemover {
-    width: 100%;
+    width: 70%;
     text-align: center;
   }
 
