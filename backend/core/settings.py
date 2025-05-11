@@ -115,6 +115,8 @@ SECURE_SSL_REDIRECT = True          # força redirecionar http→https
 SESSION_COOKIE_SECURE = True        # cookies só via HTTPS
 CSRF_COOKIE_SECURE = True
 
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 CORS_ALLOW_HEADERS = [
     'content-type',
     'authorization',
