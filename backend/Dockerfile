@@ -24,4 +24,4 @@ ENV SQLITE_PATH="/data/db.sqlite3"
 EXPOSE 8000
 
 # 1 worker para evitar ‘database is locked’
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "1", "core.wsgi"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "1", "--threads", "1", --access-logfile", "-", "--error-logfile",  "-", "--log-level", "debug", "core.wsgi:application"]
