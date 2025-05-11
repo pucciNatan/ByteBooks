@@ -1,11 +1,6 @@
 from pathlib import Path
 import os
 
-ABACATEPAY = {
-    "TOKEN": "abc_dev_WP6jdftbtJb4F3gdpPEa3fYy",
-    "BASE_URL": "https://api.abacatepay.com",
-}
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-27gc#f7c!nw^pw=_&0tnv7^=p$&53^u1i#mp7q+i_4cxu92sky'
@@ -14,10 +9,10 @@ MY_SECRET = 'muito_secreta_mds'
 
 ACCESS_TOKEN_EXPIRE = 5
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
-    'bytebooks.onrender.com',
+    'bytebooks-backend.fly.dev',
 ]
 
 INSTALLED_APPS = [
@@ -36,13 +31,13 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -68,9 +63,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.sqlite3",
+        "NAME": os.environ.get("SQLITE_PATH", "/data/db.sqlite3"),
     }
 }
 
@@ -111,6 +106,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     'https://bytebooks-kappa.vercel.app'
 ]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://bytebooks-backend.fly.dev",
+]
+
+SECURE_SSL_REDIRECT = True          # força redirecionar http→https
+SESSION_COOKIE_SECURE = True        # cookies só via HTTPS
+CSRF_COOKIE_SECURE = True
 
 CORS_ALLOW_HEADERS = [
     'content-type',
