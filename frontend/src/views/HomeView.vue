@@ -3,7 +3,6 @@
     <div class="sessao">
       <div class="titulo">Acabaram de chegar</div>
       <hr>
-      <a href="" class="verTodos">Ver todos</a>
       <section>
         <CarroselComponent tipo = 'UltimosLancamentosLoja'/>
       </section>
@@ -12,7 +11,6 @@
     <div class="sessao">
       <div class="titulo">Os mais vendidos</div>
       <hr>
-      <a href="" class="verTodos">Ver todos</a>
       <section>
         <CarroselComponent tipo = 'maisVendidos'/>
       </section>
@@ -21,7 +19,6 @@
     <div class="sessao">
       <div class="titulo">Combos</div>
       <hr>
-      <a href="" class="verTodos">Ver todos</a>
       <section>
         <CarroselComponent tipo = 'combos'/>
       </section>
