@@ -6,7 +6,7 @@
           <img
             v-for="livro in combo.livros"
             :key="livro.id"
-            :src="'https://bytebooks.onrender.com' + livro.img"
+            :src="'https://bytebooks-backend.fly.dev' + livro.img"
             :alt="'Capa do livro ' + livro.titulo"
           />
         </div>

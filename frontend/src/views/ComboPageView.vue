@@ -2,7 +2,7 @@
   <div class="containerPagProduto">
     <div class="conteudoEsquerda">
       <div class="imgProduto">
-        <img v-for="livro in combo.livros" :key="livro.id" :src="'https://bytebooks.onrender.com' + livro.img" :alt="'Capa do livro ' + livro.titulo" />
+        <img v-for="livro in combo.livros" :key="livro.id" :src="'https://bytebooks-backend.fly.dev' + livro.img" :alt="'Capa do livro ' + livro.titulo" />
       </div>
 
       <div class="detalhesCombo scrollMinimalista">

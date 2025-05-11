@@ -181,7 +181,7 @@ export default {
 
         const response = await axios.post(
           //'http://127.0.0.1:8000/api/clientes/registro/',
-          'https://bytebooks.onrender.com/api/clientes/registro/',
+          'https://bytebooks-backend.fly.dev/api/clientes/registro/',
           dados,
           { headers: { 'Content-Type': 'application/json' } }
         )
