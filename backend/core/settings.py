@@ -96,9 +96,7 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL  = '/static/'
-
-STATIC_ROOT = os.environ.get('STATIC_ROOT', '/data/staticfiles')
-
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -107,15 +105,11 @@ CORS_ALLOWED_ORIGINS = [
     'https://bytebooks-kappa.vercel.app'
 ]
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://bytebooks-backend.fly.dev",
-]
-
-SECURE_SSL_REDIRECT = True          # força redirecionar http→https
-SESSION_COOKIE_SECURE = True        # cookies só via HTTPS
-CSRF_COOKIE_SECURE = True
-
+CSRF_TRUSTED_ORIGINS    = ["https://bytebooks-backend.fly.dev"]
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SESSION_COOKIE_SECURE   = True
+CSRF_COOKIE_SECURE      = True
+SECURE_SSL_REDIRECT     = True
 
 CORS_ALLOW_HEADERS = [
     'content-type',
