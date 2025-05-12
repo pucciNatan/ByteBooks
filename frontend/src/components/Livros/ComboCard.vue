@@ -68,12 +68,16 @@ export default {
 .imgCombo img:nth-child(3) { transform: translate(40px, 10px) rotate(-5deg); z-index: 3; }
 .imgCombo:hover img { transform: translateY(0) scale(1.1); }
 
-.infosCombo {
-  background: #333;
-  padding: 10px;
-  text-align: center;
-  height: 140px;
+.infosCombo{
+  background:#333;
+  padding:10px;
+  height:140px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  align-items:center;
 }
+
 .tituloCombo    { height: 50px; font-size: 18px; color: #f1f1f1; font-weight: bold; overflow: hidden; }
 .descricaoCombo { height: 40px; font-size: 13px; color: #a0a0a0; overflow: hidden; }
 .precoCombo     { height: 35px; font-size: 26px; color: #dee204; font-family: 'Montserrat', sans-serif; }
