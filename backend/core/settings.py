@@ -5,7 +5,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-27gc#f7c!nw^pw=_&0tnv7^=p$&53^u1i#mp7q+i_4cxu92sky'
 
-MY_SECRET = 'muito_secreta_mds'
+MY_SECRET = 'segredo'
 
 ACCESS_TOKEN_EXPIRE = 5
 
