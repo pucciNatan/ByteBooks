@@ -47,9 +47,6 @@ ByteBooks é uma plataforma de e-commerce de livros voltada para desenvolvedores
    ```bash
    git clone -b dev https://github.com/pucciNatan/ByteBooks.git
    cd bytebooks
-   ```bash
-   git clone https://github.com/seu-usuario/bytebooks.git
-   cd bytebooks
    ```
 2. **Criar e ativar virtualenv**
    ```bash
