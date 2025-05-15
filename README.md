@@ -80,9 +80,9 @@ ByteBooks é uma plataforma de e-commerce de livros voltada para desenvolvedores
   npm run serve
   ```
 
-## Agora com o front e back rodando, você consegue entrar nessa URL pra fazer oque quiser xD
-http://localhost:8080/ -> O site
-http://localhost:8000/admin -> Painel admin pra cadastrar novos livros / combos. Logue com a conta admin que você criou 
+## Agora com o front e back rodando, você consegue entrar nessa URL pra fazer oque quiser
+- http://localhost:8080/ -> O site
+- http://localhost:8000/admin -> Painel admin pra cadastrar novos livros / combos. Logue com a conta admin que você criou 
 
 ## Contribuição
 - Fork deste repositório
