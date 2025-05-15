@@ -1,17 +1,23 @@
 from pathlib import Path
+from dotenv import dotenv_values
 import os
+
+config = dotenv_values("backend/secret.env")
+mysecret = config.get("MY_SECRET")
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-27gc#f7c!nw^pw=_&0tnv7^=p$&53^u1i#mp7q+i_4cxu92sky'
 
-MY_SECRET = 'muito_secreta_mds'
+MY_SECRET = f'{mysecret}'
 
 ACCESS_TOKEN_EXPIRE = 5
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
     'bytebooks-backend.fly.dev',
 ]
 
@@ -31,7 +37,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    #'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -65,7 +71,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.environ.get("SQLITE_PATH", "/data/db.sqlite3"),
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
@@ -85,7 +91,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 MEDIA_URL  = "/media/"
-MEDIA_ROOT = "/data/media"     # persistente
+#MEDIA_ROOT = "/data/media"     # persistente
 
 LANGUAGE_CODE = 'pt-br'
 
@@ -97,25 +103,33 @@ USE_TZ = True
 
 STATIC_URL  = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
+#STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CORS_ALLOWED_ORIGINS = [
-    'https://bytebooks-kappa.vercel.app'
+    #'https://bytebooks-kappa.vercel.app',
+    'http://localhost:8080'
 ]
 
-CSRF_TRUSTED_ORIGINS    = ["https://bytebooks-backend.fly.dev"]
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SESSION_COOKIE_SECURE   = True
-CSRF_COOKIE_SECURE      = True
-SECURE_SSL_REDIRECT     = True
+#CSRF_TRUSTED_ORIGINS    = ["https://bytebooks-backend.fly.dev"]
+#SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SESSION_COOKIE_SECURE   = False #debug
+CSRF_COOKIE_SECURE      = False #debg
+SECURE_SSL_REDIRECT     = False #debug
 
-CORS_ALLOW_HEADERS = [
+'''CORS_ALLOW_HEADERS = [
     'content-type',
     'authorization',
     'x-csrftoken',
     'x-requested-with',
+]'''
+
+from corsheaders.defaults import default_headers
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+  "Authorization",
+  "X-CSRFToken",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
