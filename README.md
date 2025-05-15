@@ -1,6 +1,6 @@
 # ByteBooks
 
-ByteBooks é uma plataforma de e-commerce de livros voltada para desenvolvedores, permitindo que usuários se cadastrem, explorem e "comprem" livros focados em tecnologia.
+ByteBooks é uma plataforma de e-commerce de livros voltada para desenvolvedores, permitindo que usuários se cadastrem, explorem e "comprem" títulos focados em tecnologia.
 
 ## 📝 Sumário
 - [Descrição](#descrição)
