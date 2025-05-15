@@ -8,7 +8,7 @@
                 <div class="listaItensCarrinho" v-if="itensCarrinho.length">
                     <div class="itemCarrinho" v-for="(item, indice) in itensCarrinho" :key="indice">
                         <div class="informacoesItem">
-                            <img class="imagemItem" :src="'https://bytebooks-backend.fly.dev' + item.livro.img" :alt="'Capa do livro ' + item.livro.titulo" />
+                            <img class="imagemItem" :src="'http://127.0.0.1:8000' + item.livro.img" :alt="'Capa do livro ' + item.livro.titulo" />
                             <div class="detalhesItem">
                                 <div class="nomeItem">{{ item.livro.titulo }}</div>
                                 <p class="precoItem">R$ {{ item.livro.preco }}</p>

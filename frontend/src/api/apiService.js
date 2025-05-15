@@ -2,8 +2,8 @@ import axios from 'axios'
 import store from '../store/store.js'
 
 const apiClient = axios.create({
-  //baseURL: 'http://127.0.0.1:8000/api/',
-  baseURL:'https://bytebooks-backend.fly.dev/api/',
+  baseURL: 'http://127.0.0.1:8000/api/',
+  //baseURL:'https://bytebooks-backend.fly.dev/api/',
   headers: {
     'Content-Type': 'application/json',
   }

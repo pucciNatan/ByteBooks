@@ -2,7 +2,7 @@
     <div class="containerPagProduto">
         <div class="conteudoEsquerda">
             <div class="imgProduto">
-                <img :src="'https://bytebooks-backend.fly.dev' + livro.img" :alt="'Capa do livro ' + livro.titulo">
+                <img :src="'http://localhost:8000' + livro.img" :alt="'Capa do livro ' + livro.titulo">
             </div>
             <div class="metadados">
                 <div class="quadradosInfos">

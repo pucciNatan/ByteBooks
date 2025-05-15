@@ -155,8 +155,8 @@ export default createStore({
     async logarUsuario({ commit }, dados){
     try{
       const res = await axios.post(
-        //'http://127.0.0.1:8000/api/clientes/login/', dados,
-        'https://bytebooks-backend.fly.dev/api/clientes/login/', dados,
+        'http://127.0.0.1:8000/api/clientes/login/', dados,
+        //'https://bytebooks-backend.fly.dev/api/clientes/login/', dados,
         { headers: { 'Content-Type': 'application/json' } }
       );
       commit('setNomeUsuario', res.data.nomeUsuario)

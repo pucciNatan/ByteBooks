@@ -180,8 +180,8 @@ export default {
         this.btnWidth = this.$refs.registerBtn.offsetWidth + 'px'
 
         const response = await axios.post(
-          //'http://127.0.0.1:8000/api/clientes/registro/',
-          'https://bytebooks-backend.fly.dev/api/clientes/registro/',
+          'http://127.0.0.1:8000/api/clientes/registro/',
+          //'https://bytebooks-backend.fly.dev/api/clientes/registro/',
           dados,
           { headers: { 'Content-Type': 'application/json' } }
         )

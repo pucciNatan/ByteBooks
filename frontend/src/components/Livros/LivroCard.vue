@@ -4,7 +4,7 @@
       <div class="cardLivro">
         <div @click="abrirDetalhesLivro" class="imgLivro">
           <img
-            :src="`https://bytebooks-backend.fly.dev${livro.img}`"
+            :src="`http://127.0.0.1:8000${livro.img}`"
             :alt="`Capa do livro ${livro.titulo}`"
           />
         </div>

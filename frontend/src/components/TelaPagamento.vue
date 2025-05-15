@@ -30,7 +30,7 @@
         <ul class="listaLivros">
           <li v-for="(item,index) in itens" :key="index" class="itemLivro">
             <img
-              :src="'https://bytebooks-backend.fly.dev'+item.livro.img"
+              :src="'http://127.0.0.1:8000'+item.livro.img"
               :alt="'Capa do livro' + item.livro.titulo"
             />
             <div class="detalhes">
