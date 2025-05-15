@@ -9,8 +9,6 @@ primary_region = "gru"
   PORT                      = "8000"
   SQLITE_PATH               = "/data/db.sqlite3"
   DJANGO_SUPERUSER_USERNAME = "admin"
-  DJANGO_SUPERUSER_EMAIL    = "admin@bytebooks.dev"
-  DJANGO_SUPERUSER_PASSWORD = "SenhaAdm123@"
 
 [http_service]
   internal_port = 8000
