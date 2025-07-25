@@ -10,12 +10,7 @@ Acesse o deploy do projeto: https://bytebooks-kappa.vercel.app/
 - [Arquitetura](#arquitetura)
 - [Pré-requisitos](#pré-requisitos)
 - [Instalação e configuração](#instalação-e-configuração)
-- [Executando localmente](#executando-localmente)
-- [Testes](#testes)
-- [Estrutura de pastas](#estrutura-de-pastas)
 - [Contribuição](#contribuição)
-- [Licença](#licença)
-
 ---
 
 ## Descrição
