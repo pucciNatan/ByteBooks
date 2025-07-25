@@ -4,9 +4,13 @@ ByteBooks é uma plataforma de e-commerce de livros voltada para desenvolvedores
 
 Acesse o deploy do projeto: https://bytebooks-kappa.vercel.app/
 
+<br>
+
 <p align="center">
-  <img src="./siteHomePage.png" alt="ByteBooks Homepage" width="800" style="margin-top: 70px; margin-bottom: 70px;"/>
+  <img src="./siteHomePage.png" alt="ByteBooks Homepage" width="800"/>
 </p>
+
+<br>
 
 ## 📝 Sumário
 - [Descrição](#descrição)
