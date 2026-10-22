@@ -2,8 +2,6 @@
 
 ByteBooks é uma plataforma de e-commerce de livros voltada para desenvolvedores, permitindo que usuários se cadastrem, explorem e "comprem" títulos focados em tecnologia.
 
-Acesse o deploy do projeto: https://bytebooks-kappa.vercel.app/
-
 <br>
 
 <p align="center">
